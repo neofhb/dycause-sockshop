@@ -106,8 +106,8 @@ Pymicro is a 16-service simulated dataset included in DyCause. It uses latency m
 | Dataset | Services | Metric | PR@2 | PR@5 | Acc |
 |---------|:--:|------|------|------|------|
 | Pymicro | 16 | latency | 100% | 100% | 93.75% |
-| SockShop e1 | 4 | latency | 100% | — | 75.00% |
-| SockShop e2 | 4 | latency | 100% | — | 75.00% |
+| SockShop e1 | 4 | latency | 100% | 100% | 75.00% |
+| SockShop e2 | 4 | latency | 100% | 100% | 75.00% |
 
 Pymicro run command:
 ```bash
@@ -120,3 +120,14 @@ python main_dycause_mp.py pymicro 16 1 --start 1200 --bef 100 --aft 0 --lag 9 --
 - `dycause_lib/causal_graph_build.py:25` — `np.int` → `int` (numpy 2.x compatibility)
 - `main_dycause_mp.py:402` — `sum(overlay_counts)` → `overlay_counts.sum()` (numpy 2.x compatibility)
 - `main_dycause.py:352` — same fix for single-process version
+
+## Git conventions
+- Use normal `git push` (NOT `--force`). This preserves commit history.
+- Use incremental commits for changes; do not squash or amend published history.
+- Repository: `https://github.com/neofhb/dycause-sockshop`
+- If push fails with HTTP 502, retry with token in URL:
+  ```bash
+  git remote set-url origin https://oauth2:<token>@github.com/neofhb/dycause-sockshop.git
+  git push
+  git remote set-url origin https://github.com/neofhb/dycause-sockshop.git
+  ```
