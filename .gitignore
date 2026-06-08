@@ -1,0 +1,27 @@
+# DyCause reproduction experiment
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+
+# Microservices demo (clone from upstream)
+microservices-demo/
+
+# DyCause upstream (only track patches + experiment data)
+dycause_rca/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Large generated files
+data/sockshop/load-test-*.csv
+
+# Temp files
+*.bak
+*.tmp
