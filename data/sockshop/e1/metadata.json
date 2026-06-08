@@ -1,0 +1,16 @@
+{
+  "experiment": "e1",
+  "root_cause_indices": [
+    2
+  ],
+  "frontend_idx": 0,
+  "services": [
+    "front-end",
+    "catalogue",
+    "payment",
+    "user"
+  ],
+  "anomaly_start_second": 315,
+  "dycause_cmd": "python main_dycause_mp.py e1 0 2 --start 315 --bef 300 --aft 300 --lag 5 --step 30 --edge_thres 0.7 --verbose 2",
+  "desc": "Pod-Kill: payment"
+}
