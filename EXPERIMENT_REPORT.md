@@ -57,13 +57,14 @@ DyCause 包含五个核心模块：
 ```
 
 计算 F 统计量：
+
 ```
-F = (SSE_partial - SSE_full) / (df_full - df_partial)
-    ─────────────────────────────────────────────
-            SSE_full / (T - df_full - 1)
+       (RSS_restricted - RSS_unrestricted) / p
+F = ---------------------------------------------
+          RSS_unrestricted / (T - 2p - 1)
 ```
 
-若 F 值显著大于 F 分布临界值，则拒绝"X 对 Y 无因果影响"的原假设，认为 X→Y 存在 Granger 因果。
+其中 `RSS_restricted` 为仅含 Y 滞后项（受限模型）的残差平方和，`RSS_unrestricted` 为同时含 X、Y 滞后项（无限制模型）的残差平方和，`p` 为滞后阶数，`T` 为观测数。
 
 DyCause 创新之处在于不检验整个时间区间，而是枚举 `[s:e]` 滑动窗口，检测**仅在特定时间段显著**的因果关系，从而捕捉故障传播的动态过程。
 
@@ -211,12 +212,10 @@ e1（payment 根因）和 e2（user 根因）共享同一因果链：**user→pa
 
 #### Granger 因果链
 
-DyCause 发现的动态因果边（edge_thres=0.6）：
+DyCause 发现的动态因果边（edge_thres=0.7）：
 
 ```
 user ──→ payment ──→ catalogue ──→ front-end
-  │                                    ↑
-  └────→ catalogue ────────────────────┘
 ```
 
 #### DyCause 输出
@@ -224,13 +223,13 @@ user ──→ payment ──→ catalogue ──→ front-end
 ```
 节点     |  异常分数
 catalogue (idx=1) | 0.416
-user      (idx=3) | 0.115
-payment   (idx=2) | 0.024   ← 根因，正确命中
+payment   (idx=2) | 0.085   ← 根因，正确命中
+user      (idx=3) | 0.052
 
-PR@3=100%  Acc=50%
+PR@2=100%  Acc=75%
 ```
 
-**分析**：payment 被正确识别为根因候选（排名第 3），但分数较低。DyCause 优先将 catalogue 排第一，因为 catalogue 作为中间节点，延迟波动变化最大（-42.5% 标准差），在依赖图中被误认为更可能是源头。
+**分析**：payment 被正确识别为根因候选（排名第 2）。DyCause 优先将 catalogue 排第一，因为 catalogue 作为中间节点，延迟波动变化最大（-42.5% 标准差），在依赖图中被误认为更可能是源头。
 
 ### 6.2 e2: Pod-Kill user（根因=user, idx=3）
 
@@ -247,7 +246,7 @@ PR@3=100%  Acc=50%
 
 #### Granger 因果链
 
-DyCause 发现的边（仅 3 条，edge_thres=0.6）：
+DyCause 发现的边（仅 3 条，edge_thres=0.7）：
 
 ```
 user ──→ payment ──→ catalogue ──→ front-end
@@ -266,7 +265,7 @@ catalogue (idx=1) | 0.252
 PR@2=100%  Acc=75%
 ```
 
-**分析**：e2 表现优于 e1（Acc=75% vs 50%），因为 user 被 Kill 后，其延迟信号整个消失，Granger 无法在 user 上发现自相关，更准确地将其排在第二。payment 排第一是因为它作为 user→payment→catalogue 链的中间节点，波动也被放大。
+**分析**：两个实验均达到 Acc=75%，PR@2=100%。e2 中 user 被 Kill 后，其延迟信号消失，Granger 无法在 user 上发现自相关，更准确地将其排在第二。payment 排第一是因为它作为 user→payment→catalogue 链的中间节点，波动也被放大。
 
 ### 6.3 对比分析
 
@@ -275,7 +274,7 @@ PR@2=100%  Acc=75%
 | 服务数 | 16 | 4 | 4 |
 | 指标 | 延迟 | 延迟 | 延迟 |
 | 故障类型 | 代码级延迟注入 | 容器级 Pod-Kill | 容器级 Pod-Kill |
-| Granger 显著边 | 高密度 | 4 条 | 3 条 |
+| Granger 显著边 | 高密度 | 3 条 | 3 条 |
 | PR@2 | 100% | 100% | **100%** |
 | PR@3 | 100% | 100% | 100% |
 | Acc | 93.75% | 75.00% | **75.00%** |
@@ -284,7 +283,7 @@ PR@2=100%  Acc=75%
 
 1. **图规模**：Pymicro 16 节点产生更丰富的依赖结构，节点间独立性更强，Granger 因果检验的信噪比更高。SockShop 4 节点的图中，中间节点（catalogue）可能被误标记为根因。
 2. **故障机制**：Pymicro 是代码级延迟注入（精确可控的数值变化），SockShop 是 Pod-Kill（服务瞬间消失再恢复，信号窗口极短）。
-3. **e1 vs e2**：e2 表现更好，因为 user 是 leaf 节点（只被 front-end 调用），其异常传播链更单纯（user→front-end 直连）；payment 处于中间层，异常通过 catalogue 间接传播，链条更长。
+3. **e1 vs e2**：两者准确率相同（Acc=75%，PR@2=100%）。e2 的 user 是 leaf 节点（只被 front-end 调用），异常传播链单纯；e1 的 payment 处于中间层，异常通过 catalogue 间接传播，链条更长。
 
 ### 6.4 失败的指标对照
 

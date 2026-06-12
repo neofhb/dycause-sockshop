@@ -26,3 +26,8 @@ ISSTA21-DyCause.pdf
 # Temp files
 *.bak
 *.tmp
+*.log
+
+# Generated reports
+EXPERIMENT_REPORT.html
+EXPERIMENT_REPORT.pdf

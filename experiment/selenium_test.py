@@ -13,6 +13,8 @@ import os
 import sys
 import subprocess
 import signal
+import json
+import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -273,6 +275,7 @@ def main():
     parser.add_argument("--url", default="http://localhost:30001", help="SockShop front-end URL")
     parser.add_argument("--headless", action="store_true", default=True, help="Run headless")
     parser.add_argument("--visible", action="store_false", dest="headless", help="Run with browser visible")
+    parser.add_argument("--output", default=None, help="Save JSON results to file")
     parser.add_argument("--no-pf", action="store_true", help="Skip starting kubectl port-forward")
     args = parser.parse_args()
     
@@ -291,6 +294,21 @@ def main():
         if pf_proc:
             stop_port_forward(pf_proc)
             print("Port-forward stopped.")
+    
+    if args.output:
+        report = {
+            "tool": "Selenium",
+            "url": args.url,
+            "headless": args.headless,
+            "timestamp": datetime.datetime.now().isoformat(),
+            "steps": results,
+            "total_time": sum(r["elapsed"] for r in results if r["elapsed"]),
+            "summary": {r["message"]: r["elapsed"] for r in results}
+        }
+        os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
+        with open(args.output, "w", encoding="utf-8") as f:
+            json.dump(report, f, indent=2, ensure_ascii=False)
+        print(f"Results saved: {args.output}")
     
     return results
 

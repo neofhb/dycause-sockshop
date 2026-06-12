@@ -1,0 +1,36 @@
+{
+  "tool": "Selenium",
+  "url": "http://127.0.0.1:30001",
+  "headless": true,
+  "timestamp": "2026-06-12T18:59:21.670287",
+  "steps": [
+    {
+      "message": "Open homepage",
+      "elapsed": 10.807899713516235
+    },
+    {
+      "message": "Found 1 products on homepage",
+      "elapsed": 0.01799154281616211
+    },
+    {
+      "message": "View product detail",
+      "elapsed": 1.1170523166656494
+    },
+    {
+      "message": "Add to cart",
+      "elapsed": 11.287100553512573
+    },
+    {
+      "message": "Go to cart page",
+      "elapsed": 1.0840144157409668
+    }
+  ],
+  "total_time": 24.314058542251587,
+  "summary": {
+    "Open homepage": 10.807899713516235,
+    "Found 1 products on homepage": 0.01799154281616211,
+    "View product detail": 1.1170523166656494,
+    "Add to cart": 11.287100553512573,
+    "Go to cart page": 1.0840144157409668
+  }
+}
