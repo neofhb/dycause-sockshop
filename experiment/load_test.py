@@ -24,8 +24,18 @@ SOCKSHOP_ENDPOINTS = [
     {"method": "GET", "path": "/", "name": "Homepage"},
     {"method": "GET", "path": "/category.html", "name": "Category"},
     {"method": "GET", "path": "/detail.html?id=3395a43e-2d88-40de-b95f-e00e1502085b", "name": "Product-Detail"},
-    {"method": "GET", "path": "/catalogue", "name": "Catalogue-API"},
     {"method": "GET", "path": "/basket.html", "name": "Shopping-Cart"},
+    {"method": "GET", "path": "/catalogue", "name": "Catalogue-API"},
+    {"method": "GET", "path": "/tags", "name": "Tags-API"},
+    {"method": "GET", "path": "/customers", "name": "Customers-API"},
+    {"method": "GET", "path": "/cards", "name": "Cards-API"},
+    {
+        "method": "POST",
+        "path": "/cart",
+        "name": "Cart-Add",
+        "body": '{"id":"3395a43e-2d88-40de-b95f-e00e1502085b"}',
+    },
+    {"method": "POST", "path": "/orders", "name": "Order-Submit", "body": "{}"},
 ]
 
 
@@ -94,7 +104,12 @@ def worker(base_url, endpoints, duration, result):
             if ep["method"] == "GET":
                 r = session.get(url, timeout=10, allow_redirects=True)
             else:
-                r = session.post(url, timeout=10)
+                r = session.post(
+                    url,
+                    data=ep.get("body", ""),
+                    timeout=10,
+                    headers={"Content-Type": "application/json"},
+                )
             elapsed = time.time() - t0
             result.add(time.time(), ep, elapsed, r.status_code, r.ok)
         except Exception as e:

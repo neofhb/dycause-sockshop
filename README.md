@@ -9,19 +9,32 @@
 
 ## 实验结果一览
 
-| 实验 | 故障 | 根因 | PR@2 | PR@5 | Acc |
+原始 4 节点 baseline reproduction 仍然保留：
+
+| 数据集 | 故障 | 根因 | PR@2 | PR@5 | Acc |
 |------|------|------|------|------|-----|
-| e1 | Pod-Kill payment | payment | **100%** | 100% | 75.00% |
-| e2 | Pod-Kill user | user | **100%** | 100% | 75.00% |
+| SockShop 4-node e1 | Pod-Kill payment | payment | **100%** | 100% | 75.00% |
+| SockShop 4-node e2 | Pod-Kill user | user | **100%** | 100% | 75.00% |
 | Pymicro 基准 | 延迟注入 | service 1 | 100% | 100% | 93.75% |
 
-> 详细分析：[EXPERIMENT_REPORT.md](EXPERIMENT_REPORT.md)
+当前 Istio 7 节点主线与候选筛选结果如下：
+
+| 数据根 | 实验 | 根因 | 结果 |
+|------|------|------|------|
+| `sockshop_mesh_business` | `mesh_e1` | payment Pod-Kill | Top-2 |
+| `sockshop_mesh_business` | `mesh_e3` | payment NetworkDelay | Top-2 |
+| `sockshop_mesh_candidate` | `mesh_e6` | orders NetworkDelay | Rank 1 |
+| `sockshop_mesh_candidate` | `mesh_e7` | carts NetworkDelay | Rank 1 |
+| `sockshop_mesh_candidate` | `mesh_e9` | orders Pod-Kill | Rank 2 |
+
+> 当前主线分析：[EXPERIMENT_REPORT_CURRENT.md](EXPERIMENT_REPORT_CURRENT.md)  
+> 历史报告保留：[EXPERIMENT_REPORT.md](EXPERIMENT_REPORT.md)
 
 ## 环境要求
 
 - Docker Desktop
 - Minikube v1.38+
-- kubectl、Helm 3
+- kubectl、Helm 3、istioctl（运行 Service Mesh 增强实验时需要）
 - Python 3.12 + `pandas numpy openpyxl matplotlib`
 
 ## 快速开始
@@ -33,7 +46,8 @@
 git clone https://github.com/microservices-demo/microservices-demo.git
 
 # 启动 Minikube
-minikube start --driver=docker
+# Service Mesh 增强实验建议至少 4 CPU / 7GB 内存
+minikube start --driver=docker --cpus=4 --memory=7168
 
 # 创建命名空间并部署全部服务
 kubectl create ns sock-shop
@@ -58,28 +72,22 @@ helm install chaos-mesh chaos-mesh/chaos-mesh -n chaos-testing --create-namespac
 ### 3. 部署负载生成器
 
 ```bash
-kubectl apply -f - <<EOF
-apiVersion: v1
-kind: Pod
-metadata: {name: load-gen, namespace: sock-shop}
-spec:
-  containers:
-  - name: load
-    image: curlimages/curl:8.6.0
-    command: ["sh","-c"]
-    args:
-    - 'while true; do
-        curl -so /dev/null http://front-end:80/;
-        curl -so /dev/null http://front-end:80/category.html;
-        curl -so /dev/null http://catalogue:80/catalogue;
-        curl -so /dev/null -X POST http://payment:80/paymentAuth
-          -H "Content-Type: application/json" -d "{\"amount\":1}";
-        curl -so /dev/null http://user:80/customers;
-        sleep 0.2;
-      done'
-  restartPolicy: Never
-EOF
+kubectl delete pod load-gen -n sock-shop --ignore-not-found
+kubectl apply -f experiment/load-gen-business.yaml
+kubectl wait pod/load-gen -n sock-shop --for=condition=Ready --timeout=120s
 ```
+
+`load-gen-business.yaml` 以 front-end 页面和 front-end API proxy 路径为主，并每 5 轮执行一次低频 direct coverage probe，避免 7 个 mesh latency 节点因低流量缺样。
+
+候选对象筛选实验使用 checkout 链路更重的负载：
+
+```bash
+kubectl delete pod load-gen -n sock-shop --ignore-not-found
+kubectl apply -f experiment/load-gen-checkout.yaml
+kubectl wait pod/load-gen -n sock-shop --for=condition=Ready --timeout=120s
+```
+
+`load-gen-checkout.yaml` 提高 carts、orders、shipping 的连续请求占比，用于筛选更适合 DyCause 的新实验对象。
 
 ### 4. 运行实验
 
@@ -94,7 +102,93 @@ python run_experiments.py --run-all
 python run_experiments.py --exp e1
 ```
 
-### 5. 运行 DyCause 分析
+### 5. 运行 Service Mesh 增强实验
+
+原始实验只使用 SockShop 中 4 个原生暴露 `request_duration_seconds` 的 Go 服务。为增加数据节点并更贴近 DyCause 的用户空间 API proxy 思想，可以启用 Istio sidecar mode，采集 7 个 HTTP 服务的 destination latency：
+
+```text
+front-end, catalogue, carts, orders, payment, shipping, user
+```
+
+启用 Istio：
+
+```powershell
+# 在仓库根目录运行
+.\scripts\check-mesh-prereqs.ps1 -PythonExe D:\py\python.exe
+.\scripts\enable-istio.ps1
+```
+
+如果刚通过 `winget install Istio.Istio` 安装，当前终端可能还没刷新 PATH，可把 `istioctl.exe` 完整路径传给 `-IstioctlExe`。
+
+验证单次 120 秒采集：
+
+```bash
+cd experiment
+python collect_istio_latency.py --duration 120 --output ../data/sockshop_mesh_business/smoke
+```
+
+Istio 采集默认使用 `--rate-window 15s`。在当前 SockShop 负载下，5s 窗口容易因为低流量窗口产生间歇性 `NaN`。
+
+运行 mesh 实验：
+
+```bash
+# 单个场景，先跑 1 次冒烟；--no-wait 只验证管线，不代表正式实验采样语义
+python run_mesh_experiments.py --exp mesh_e1 --repeat 1 --baseline 120 --fault 120 --no-wait
+
+# 当前 business 主线：payment 相关正式场景
+python run_mesh_experiments.py --exp mesh_e1 --repeat 1 --run-dycause
+python run_mesh_experiments.py --exp mesh_e3 --repeat 1 --run-dycause
+
+# 参数敏感性分析
+python run_mesh_experiments.py --exp mesh_e1 --repeat 1 --run-dycause --sensitivity
+
+# 汇总 business 主线的 run
+python summarize_mesh_results.py
+
+# 当前 business 主线压缩批量方案
+python run_compressed_mesh_batch.py
+
+# 候选对象筛选：orders/carts/shipping，每个先跑 1 次
+python run_compressed_mesh_batch.py \
+  --plan mesh_e6=1,mesh_e7=1,mesh_e8=1,mesh_e9=1 \
+  --data-root ../data/sockshop_mesh_candidate \
+  --dataset-prefix candidate_ \
+  --load-profile business-checkout-v2
+```
+
+输出位置：
+
+```text
+原始 4 节点 baseline reproduction:
+  data/sockshop/
+
+当前 7 节点 business-front-proxy 主线:
+  data/sockshop_mesh_business/<exp>/runXX/
+  dycause_rca/data/business_<exp>_mesh_runXX/rawdata.xlsx
+
+候选 checkout load:
+  data/sockshop_mesh_candidate/<exp>/runXX/
+  dycause_rca/data/candidate_<exp>_mesh_runXX/rawdata.xlsx
+
+历史 direct-service mesh 归档:
+  data/archive/sockshop_mesh_legacy_direct_service/
+```
+
+当前主线默认参数为 `lag=5, step=30, edge_thres=0.8`，Istio 查询窗口为 `rate_window=15s`。`metadata.json` 会记录 `load_profile`、`data_root` 和 `dataset_prefix`；旧 direct-service mesh 数据已归档到 `data/archive/sockshop_mesh_legacy_direct_service/`。
+
+候选实验编号从 `mesh_e6` 开始：`mesh_e6=orders delay`、`mesh_e7=carts delay`、`mesh_e8=shipping delay`、`mesh_e9=orders pod-kill`。当前 `mesh_e2/e4/e5` 保留为 user/catalogue 相关负例，不复用编号。
+
+手动单跑新 load 数据示例：
+
+```bash
+python run_mesh_experiments.py --exp mesh_e3 --repeat 1 \
+  --baseline 300 --fault 300 --run-dycause \
+  --data-root ../data/sockshop_mesh_business \
+  --dataset-prefix business_ \
+  --load-profile business-front-proxy-v1
+```
+
+### 6. 运行 DyCause 分析
 
 ```bash
 cd dycause_rca
@@ -114,6 +208,16 @@ python main_dycause_mp.py pymicro 16 1 \
   --start 1200 --bef 100 --aft 0 \
   --lag 9 --step 30 --num_sel 1 \
   --edge_thres 0.8 --verbose 2 --mean arithmetic
+
+# business 主线：mesh_e1 run01，payment Pod-Kill（DyCause 根因编号=5）
+python main_dycause_mp.py business_mesh_e1_mesh_run01 0 5 \
+  --start 315 --bef 300 --aft 300 \
+  --lag 5 --step 30 --edge_thres 0.8 --verbose 2
+
+# candidate 主线：mesh_e6 run01，orders NetworkDelay（DyCause 根因编号=4）
+python main_dycause_mp.py candidate_mesh_e6_mesh_run01 0 4 \
+  --start 315 --bef 300 --aft 300 \
+  --lag 5 --step 30 --edge_thres 0.8 --verbose 2
 ```
 
 ## 项目结构
@@ -121,7 +225,9 @@ python main_dycause_mp.py pymicro 16 1 \
 ```
 ├── experiment/                # 实验脚本
 │   ├── collect_latency.py     #   通过 kubectl exec 采集延迟指标
+│   ├── collect_istio_latency.py #  采集 Istio destination latency（7 节点）
 │   ├── run_experiments.py     #   实验编排器
+│   ├── run_mesh_experiments.py #   Istio Service Mesh 实验编排器
 │   ├── proof_cpu_fails.py     #   对照实验（容器CPU失败证明）
 │   ├── generate_figures.py    #   生成统计图表
 │   ├── analyze_data.py        #   数据统计分析
@@ -133,16 +239,20 @@ python main_dycause_mp.py pymicro 16 1 \
 ├── data/sockshop/             # 实验数据
 │   ├── e1/                    #   Pod-Kill payment
 │   └── e2/                    #   Pod-Kill user
+├── data/sockshop_mesh_business/  # 当前 Istio 7 节点主线
+├── data/sockshop_mesh_candidate/ # 候选对象筛选数据
+├── data/archive/                # 历史 mesh 数据归档
 ├── dycause_rca/               # DyCause 源码（已打 Python 3.12 补丁）
 ├── scripts/                   # Minikube 启停脚本
 ├── README.md                  # 本文件
 ├── AGENTS.md                  # 技术细节
-└── EXPERIMENT_REPORT.md       # 完整实验结果与分析
+├── EXPERIMENT_REPORT_CURRENT.md # 当前主线结果与筛选结论
+└── EXPERIMENT_REPORT.md       # 历史实验报告
 ```
 
 ## 算法原理
 
-4 个 Go 服务通过 Prometheus（1s 抓取）暴露 `request_duration_seconds` 延迟指标。ChaosMesh 注入 Pod-Kill 故障。DyCause 执行：
+原始实验中，4 个 Go 服务通过 Prometheus（1s 抓取）暴露 `request_duration_seconds` 延迟指标。增强实验中，Istio sidecar 通过 `istio_request_duration_milliseconds` 暴露 7 个 HTTP 服务的 destination latency。当前 mesh 主线采用的 DyCause 参数为 `--lag 5 --step 30 --edge_thres 0.8`，这是 business-front-proxy 和 candidate 筛选中都表现稳定的组合。ChaosMesh 注入 Pod-Kill 或 NetworkDelay 故障。DyCause 执行：
 
 1. **Granger 因果检验** — 对每对服务 (i→j) 进行滑动窗口因果检验
 2. **依赖图构建** — 自适应阈值筛选显著因果边
@@ -150,7 +260,9 @@ python main_dycause_mp.py pymicro 16 1 \
 
 ## 关键发现
 
-**只有应用级请求延迟（`request_duration_seconds`）能产生有效的 Granger 因果信号。** 其他指标（容器CPU、网络流量、进程CPU、吞吐量）全部失败（见 `proof_cpu_fails.py`）。
+**只有请求级延迟指标能产生有效的 Granger 因果信号。** 原始实验使用应用自身的 `request_duration_seconds`，Service Mesh 增强实验使用 Istio 的 `istio_request_duration_milliseconds`。其他指标（容器CPU、网络流量、进程CPU、吞吐量）全部失败（见 `proof_cpu_fails.py`）。
+
+DB、RabbitMQ 暂不放入主实验节点：它们主要产生 TCP 指标，和 DyCause 主实验所需的 HTTP/API 请求延迟口径不同，可作为后续扩展或对照分析。
 
 ## 注意事项
 

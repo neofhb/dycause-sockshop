@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: load-gen
+  namespace: sock-shop
+  annotations:
+    sidecar.istio.io/inject: "false"
+spec:
+  containers:
+  - name: load
+    image: curlimages/curl:8.6.0
+    command: ["sh", "-c"]
+    args:
+    - |
+      set +e
+      item_id="3395a43e-2d88-40de-b95f-e00e1502085b"
+      i=0
+      while true; do
+        i=$((i + 1))
+
+        curl -m 3 -so /dev/null http://front-end:80/
+        curl -m 3 -so /dev/null http://front-end:80/category.html
+        curl -m 3 -so /dev/null "http://front-end:80/detail.html?id=${item_id}"
+        curl -m 3 -so /dev/null http://front-end:80/basket.html
+        curl -m 3 -so /dev/null -X POST http://front-end:80/cart \
+          -H "Content-Type: application/json" \
+          -d "{\"id\":\"${item_id}\"}"
+        curl -m 5 -so /dev/null -X POST http://front-end:80/orders
+
+        curl -m 3 -so /dev/null http://carts:80/carts/1
+        curl -m 3 -so /dev/null http://orders:80/orders
+        curl -m 3 -so /dev/null -X POST http://payment:80/paymentAuth \
+          -H "Content-Type: application/json" \
+          -d '{"amount":1}'
+
+        if [ $((i % 3)) -eq 0 ]; then
+          curl -m 3 -so /dev/null http://front-end:80/catalogue
+          curl -m 3 -so /dev/null http://front-end:80/customers
+          curl -m 3 -so /dev/null http://front-end:80/cards
+          curl -m 3 -so /dev/null http://shipping:80/shipping
+        fi
+
+        if [ $((i % 5)) -eq 0 ]; then
+          curl -m 3 -so /dev/null http://catalogue:80/catalogue
+          curl -m 3 -so /dev/null http://user:80/customers
+        fi
+
+        sleep 0.5
+      done
+  restartPolicy: Always

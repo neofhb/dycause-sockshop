@@ -1,0 +1,78 @@
+{
+  "experiment": "final_e1",
+  "run": "run01",
+  "desc": "Formal: Pod-Kill payment",
+  "root_cause": "payment",
+  "root_cause_indices": [
+    5
+  ],
+  "group": "formal",
+  "fault_type": "pod-kill",
+  "object_role": "core",
+  "frontend_idx": 0,
+  "services": [
+    "front-end",
+    "catalogue",
+    "carts",
+    "orders",
+    "payment",
+    "shipping",
+    "user"
+  ],
+  "anomaly_start_second": 315,
+  "baseline_seconds": 300,
+  "fault_seconds": 300,
+  "delay_seconds": 15,
+  "rate_window": "15s",
+  "load_profile": "business-final-v3",
+  "data_root": "D:\\project\\homework\\sockshop\\data\\sockshop_mesh_final",
+  "dataset_prefix": "final_",
+  "chaos_apply_epoch": 1781590078,
+  "dycause_dataset": "final_final_e1_mesh_run01",
+  "dycause_data_dir": "D:\\project\\homework\\sockshop\\dycause_rca\\data\\final_final_e1_mesh_run01",
+  "dycause_cmd": "D:\\py\\python.exe main_dycause_mp.py final_final_e1_mesh_run01 0 5 --start 315 --bef 300 --aft 300 --lag 5 --step 30 --edge_thres 0.8 --verbose 2",
+  "dycause_results": [
+    {
+      "params": {
+        "lag": 5,
+        "step": 30,
+        "edge_thres": 0.8
+      },
+      "returncode": 0,
+      "log_path": "D:\\project\\homework\\sockshop\\data\\sockshop_mesh_final\\final_e1\\run01\\dycause_lag5_step30_edge0.8.log",
+      "tail": [
+        "               BFS Queue Len:     7 Output queue size:      5",
+        "               BFS Queue Len:     6 Output queue size:      6",
+        "               BFS Queue Len:     6 Output queue size:      6",
+        "               BFS Queue Len:     5 Output queue size:      7",
+        "               BFS Queue Len:     5 Output queue size:      7",
+        "               BFS Queue Len:     4 Output queue size:      8",
+        "               BFS Queue Len:     3 Output queue size:      9",
+        "               BFS Queue Len:     2 Output queue size:      9",
+        "               BFS Queue Len:     1 Output queue size:     10",
+        "",
+        "0.4420,[0, 3, 1, 6, 7, 2]",
+        "0.4391,[0, 3, 1, 6, 7, 4, 2]",
+        "0.4250,[0, 3, 4, 1, 6, 7, 2]",
+        "0.4201,[0, 3, 4, 2]",
+        "0.4071,[0, 3, 1, 5, 6, 7, 4, 2]",
+        "0.4022,[0, 3, 1, 5, 6, 7, 2]",
+        "0.3949,[0, 3, 4, 1, 5, 6, 7, 2]",
+        "0.3927,[0, 4, 1, 6, 7, 2]",
+        "0.3609,[0, 4, 1, 5, 6, 7, 2]",
+        "0.3597,[0, 4, 2]",
+        "|    Node|       Score|",
+        "|       7|   1.0533333|",
+        "|       2|   0.4880933|",
+        "|       4|   0.4851657|",
+        "|       3|   0.4725393|",
+        "|       6|   0.3358600|",
+        "  PR@1    PR@2    PR@3    PR@4    PR@5    PR@Avg     Acc",
+        "------  ------  ------  ------  ------  --------  ------",
+        "0.0000  0.0000  0.0000  0.0000  0.0000    0.0000  0.0000",
+        "Used time: 16.7110 seconds"
+      ]
+    }
+  ],
+  "quality_valid": true
+}

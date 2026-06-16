@@ -1,0 +1,16 @@
+kind: NetworkChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: sock-shop
+  name: final-e6-network-loss-orders
+spec:
+  selector:
+    namespaces:
+      - sock-shop
+    labelSelectors:
+      name: orders
+  mode: all
+  action: loss
+  loss:
+    loss: "5"
+    correlation: "0"

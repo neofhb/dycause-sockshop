@@ -1,6 +1,9 @@
 param(
     [string]$MinikubeExe = "C:\Program Files\Kubernetes\Minikube\minikube.exe",
     [string]$Namespace = "sock-shop",
+    [string]$Driver = "docker",
+    [int]$Cpus = 4,
+    [int]$Memory = 7168,
     [switch]$ShowServiceUrl
 )
 
@@ -50,7 +53,12 @@ function Invoke-KubectlViaMinikube {
 $minikube = Resolve-MinikubeCommand -PreferredPath $MinikubeExe
 
 Write-Host "Starting minikube..."
-Invoke-Minikube -MinikubeCmd $minikube -Arguments @("start")
+Invoke-Minikube -MinikubeCmd $minikube -Arguments @(
+    "start",
+    "--driver=$Driver",
+    "--cpus=$Cpus",
+    "--memory=$Memory"
+)
 
 Write-Host "Updating kubectl context..."
 Invoke-Minikube -MinikubeCmd $minikube -Arguments @("update-context")

@@ -5,13 +5,15 @@
 - `scripts/` — Minikube management helpers (start/stop/open Sock Shop).
 - `experiment/` — DyCause reproduction: data collection, chaos injection, experiment runner, tests, analysis.
 - `data/sockshop/` — collected metric datasets for DyCause (e1, e2).
+- `data/sockshop_mesh/` — generated Istio Service Mesh datasets for DyCause (7 HTTP service nodes).
 - `dycause_rca/` — DyCause source code (cloned from GitHub, patched for Python 3.12 compatibility).
 - `ISSTA21-DyCause.pdf` — the paper being reproduced.
 - `README.md` — deployment and code guide.
 - `EXPERIMENT_REPORT.md` — results analysis and charts.
 
 ## Minikube helper scripts (`scripts/`)
-- `start-sockshop.ps1` — starts Minikube (Docker driver), updates context, scales sock-shop deployments to 1.
+- `start-sockshop.ps1` — starts Minikube (Docker driver, default 4 CPU / 7GB RAM), updates context, scales sock-shop deployments to 1.
+- `enable-istio.ps1` — installs Istio minimal/default profile with Prometheus metrics merging, enables sidecar injection for `sock-shop`, excludes non-experiment backing services, restarts deployments, verifies metrics.
 - `stop-sockshop.ps1 -Soft` — scales all deployments to 0; without `-Soft` stops Minikube.
 - `open-sockshop.ps1` — runs `minikube service front-end -n sock-shop --url`. Window must stay open.
 - `.cmd` wrappers are convenience launchers for PowerShell.
@@ -27,6 +29,36 @@
 - **Prometheus scrape interval**: Changed to `1s` in `04-prometheus-configmap.yaml` for optimal DyCause data density.
 - Access Prometheus API from within cluster: `kubectl exec -n monitoring deploy/prometheus-deployment -- wget -qO- "http://localhost:9090/api/v1/..."`.
 - **Do NOT use `kubectl port-forward`** — it hangs on Windows Docker driver. Use `kubectl exec` instead.
+
+## Istio Service Mesh enhancement
+- Enable with `scripts/enable-istio.ps1` after SockShop and monitoring are deployed.
+- Uses Istio sidecar mode and existing Prometheus; do not deploy a second Istio addon Prometheus for the main pipeline.
+- Main metric: `istio_request_duration_milliseconds_sum/count` with `reporter="destination"`, converted from ms to seconds. Use a 15s rate window by default; 5s produced intermittent NaN on low-volume windows.
+- Main 7 HTTP service nodes:
+
+| Index | Service |
+|-------|---------|
+| 0 | front-end |
+| 1 | catalogue |
+| 2 | carts |
+| 3 | orders |
+| 4 | payment |
+| 5 | shipping |
+| 6 | user |
+
+- DyCause root arguments for mesh runs use the IDs printed by DyCause (1-based service IDs), while the frontend entry remains `0`: catalogue=`2`, payment=`5`, user=`7`.
+- DB/RabbitMQ are excluded from the main DyCause input because they primarily expose TCP metrics, not HTTP/API latency.
+- Mesh DyCause default after formal mesh_e1 sensitivity: `--lag 7 --step 30 --edge_thres 0.8`.
+- Mesh scripts:
+  - `experiment/collect_istio_latency.py` — collects 7-service Istio latency, plus `raw_prometheus.csv` and `quality.json`.
+  - `experiment/run_mesh_experiments.py` — runs `mesh_e1`..`mesh_e5`, exports to `dycause_rca/data/<exp>_mesh_runXX/rawdata.xlsx`, optionally runs DyCause and sensitivity analysis.
+  - `experiment/chaos/mesh-e3-network-delay-payment.yaml`, `mesh-e4-network-delay-user.yaml`, `mesh-e5-network-delay-catalogue.yaml` — 300ms NetworkDelay scenarios.
+- Quick smoke:
+  ```bash
+  cd experiment
+  python collect_istio_latency.py --duration 120 --output ../data/sockshop_mesh/smoke
+  python run_mesh_experiments.py --exp mesh_e1 --repeat 1 --baseline 120 --fault 120 --no-wait
+  ```
 
 ## ChaosMesh
 - Installed via Helm in `chaos-testing` namespace: `chaos-mesh/chaos-mesh`.
@@ -68,20 +100,14 @@ python run_experiments.py --exp e1               # single experiment
 
 ### Deploy load generator (required for traffic)
 ```bash
-kubectl apply -f - <<EOF
-apiVersion: v1
-kind: Pod
-metadata: {name: load-gen, namespace: sock-shop}
-spec:
-  containers:
-  - name: load
-    image: curlimages/curl:8.6.0
-    command: ["sh","-c"]
-    args:
-    - 'while true; do curl -so /dev/null http://front-end:80/; curl -so /dev/null http://front-end:80/category.html; curl -so /dev/null http://catalogue:80/catalogue; curl -so /dev/null -X POST http://payment:80/paymentAuth -H "Content-Type: application/json" -d "{\"amount\":1}"; curl -so /dev/null http://user:80/customers; sleep 0.2; done'
-  restartPolicy: Never
-EOF
+kubectl delete pod load-gen -n sock-shop --ignore-not-found
+kubectl apply -f experiment/load-gen-business.yaml
+kubectl wait pod/load-gen -n sock-shop --for=condition=Ready --timeout=120s
 ```
+
+`experiment/load-gen-business.yaml` uses front-end pages and front-end API proxy routes as the main traffic path, plus a low-frequency direct coverage probe every 5 loops to keep all 7 mesh latency nodes populated.
+
+Business-load mesh experiment data must be written to `data/sockshop_mesh_business/` with `--dataset-prefix business_ --load-profile business-front-proxy-v1`. Keep old direct-service load data in `data/sockshop_mesh/`; do not infer old/new from run numbers.
 
 ### Experiments
 

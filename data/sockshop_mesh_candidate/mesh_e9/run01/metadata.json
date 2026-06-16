@@ -1,0 +1,75 @@
+{
+  "experiment": "mesh_e9",
+  "run": "run01",
+  "desc": "Istio latency + Pod-Kill: orders",
+  "root_cause": "orders",
+  "root_cause_indices": [
+    4
+  ],
+  "frontend_idx": 0,
+  "services": [
+    "front-end",
+    "catalogue",
+    "carts",
+    "orders",
+    "payment",
+    "shipping",
+    "user"
+  ],
+  "anomaly_start_second": 315,
+  "baseline_seconds": 300,
+  "fault_seconds": 300,
+  "delay_seconds": 15,
+  "rate_window": "15s",
+  "load_profile": "business-checkout-v2",
+  "data_root": "D:\\project\\homework\\sockshop\\data\\sockshop_mesh_candidate",
+  "dataset_prefix": "candidate_",
+  "chaos_apply_epoch": 1781585829,
+  "dycause_dataset": "candidate_mesh_e9_mesh_run01",
+  "dycause_data_dir": "D:\\project\\homework\\sockshop\\dycause_rca\\data\\candidate_mesh_e9_mesh_run01",
+  "dycause_cmd": "D:\\py\\python.exe main_dycause_mp.py candidate_mesh_e9_mesh_run01 0 4 --start 315 --bef 300 --aft 300 --lag 5 --step 30 --edge_thres 0.8 --verbose 2",
+  "dycause_results": [
+    {
+      "params": {
+        "lag": 5,
+        "step": 30,
+        "edge_thres": 0.8
+      },
+      "returncode": 0,
+      "log_path": "D:\\project\\homework\\sockshop\\data\\sockshop_mesh_candidate\\mesh_e9\\run01\\dycause_lag5_step30_edge0.8.log",
+      "tail": [
+        "               max len      :600",
+        "               segment split: [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600]",
+        "----------------------Back trace root cause analysis phase----------------------",
+        "************** Entry:  0 ***************",
+        "               BFS Queue Len:     1 Output queue size:      0",
+        "               BFS Queue Len:     2 Output queue size:      0",
+        "               BFS Queue Len:     2 Output queue size:      0",
+        "               BFS Queue Len:     2 Output queue size:      0",
+        "               BFS Queue Len:     3 Output queue size:      0",
+        "               BFS Queue Len:     3 Output queue size:      0",
+        "               BFS Queue Len:     3 Output queue size:      0",
+        "               BFS Queue Len:     3 Output queue size:      0",
+        "               BFS Queue Len:     4 Output queue size:      0",
+        "               BFS Queue Len:     4 Output queue size:      0",
+        "               BFS Queue Len:     3 Output queue size:      0",
+        "               BFS Queue Len:     3 Output queue size:      0",
+        "               BFS Queue Len:     2 Output queue size:      0",
+        "               BFS Queue Len:     1 Output queue size:      1",
+        "               BFS Queue Len:     1 Output queue size:      1",
+        "",
+        "0.4829,[0, 1, 2, 5, 3, 4]",
+        "0.3682,[0, 6, 1, 2, 5, 3, 4]",
+        "|    Node|       Score|",
+        "|       5|   0.2414508|",
+        "|       4|   0.0759084|",
+        "|       3|   0.0237791|",
+        "  PR@1    PR@2    PR@3    PR@4    PR@5    PR@Avg     Acc",
+        "------  ------  ------  ------  ------  --------  ------",
+        "0.0000  1.0000  1.0000  1.0000  1.0000    0.8000  0.8571",
+        "Used time: 15.8518 seconds"
+      ]
+    }
+  ],
+  "quality_valid": true
+}

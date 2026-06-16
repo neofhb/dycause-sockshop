@@ -293,3 +293,192 @@ PR@2=100%  Acc=75%
 | `container_network_*` | 0/14 | cAdvisor 未采集，Minikube Docker 驱动限制 |
 | `process_cpu` | 7/14 | 进程级，Go 服务无此指标 |
 | 吞吐量 count | 7/14 | 受健康检查主导，信噪比低，归一化后波动小于 Granger 灵敏度阈值 |
+
+---
+
+## 7. Service Mesh 增强实验计划与实现
+
+为回应“数据不足”的问题，本仓库新增 Istio Service Mesh 增强版实验管线。原 e1/e2 结果保留为 **4 节点 baseline**；增强实验使用 Istio sidecar 统一采集 7 个 HTTP 服务的请求延迟，作为更贴近 DyCause 用户空间 API proxy 的复现版本。
+
+### 7.1 数据节点扩展
+
+增强实验节点固定为：
+
+| Index | Service | Metric |
+|------:|---------|--------|
+| 0 | front-end | `istio_request_duration_milliseconds` |
+| 1 | catalogue | same |
+| 2 | carts | same |
+| 3 | orders | same |
+| 4 | payment | same |
+| 5 | shipping | same |
+| 6 | user | same |
+
+PromQL 使用 destination 视角，计算每个 workload 的平均请求延迟：
+
+```promql
+(
+  sum(rate(istio_request_duration_milliseconds_sum{
+    reporter="destination",
+    destination_workload_namespace="sock-shop",
+    destination_workload="<service>"
+  }[15s]))
+  /
+  sum(rate(istio_request_duration_milliseconds_count{
+    reporter="destination",
+    destination_workload_namespace="sock-shop",
+    destination_workload="<service>"
+  }[15s]))
+) / 1000
+```
+
+单位从毫秒转换为秒，保持与原 `request_duration_seconds` 数据一致。Istio 增强实验默认使用 15s rate 窗口，以避免低流量服务在 5s 窗口中产生间歇性 NaN。数据库和 RabbitMQ 暂不放入主实验，因为它们主要产生 TCP 指标，和 DyCause 请求级 API 延迟口径不一致。
+
+### 7.2 新增脚本
+
+| 文件 | 作用 |
+|------|------|
+| `scripts/enable-istio.ps1` | 安装 Istio，开启 `sock-shop` namespace 自动注入，重启 workload 并验证 Prometheus 是否能查询 Istio 指标 |
+| `experiment/collect_istio_latency.py` | 采集 7 个服务的 Istio destination latency，输出 `rawdata.xlsx`、`raw_prometheus.csv` 和 `quality.json` |
+| `experiment/run_mesh_experiments.py` | 编排 baseline 采集、ChaosMesh 注入、fault 采集、DyCause 数据导出和可选 DyCause 执行 |
+| `experiment/chaos/mesh-e3-network-delay-payment.yaml` | payment 300ms NetworkDelay |
+| `experiment/chaos/mesh-e4-network-delay-user.yaml` | user 300ms NetworkDelay |
+| `experiment/chaos/mesh-e5-network-delay-catalogue.yaml` | catalogue 300ms NetworkDelay |
+| `experiment/load-gen-checkout.yaml` | checkout 链路候选筛选负载，提高 carts/orders/shipping 连续请求占比 |
+
+### 7.3 增强实验矩阵
+
+| ID | Fault | Root Cause | Root Index |
+|----|-------|------------|-----------:|
+| mesh_e1 | Pod-Kill payment | payment | 5 |
+| mesh_e2 | Pod-Kill user | user | 7 |
+| mesh_e3 | NetworkDelay 300ms payment | payment | 5 |
+| mesh_e4 | NetworkDelay 300ms user | user | 7 |
+| mesh_e5 | NetworkDelay 300ms catalogue | catalogue | 2 |
+| mesh_e6 | NetworkDelay 300ms orders | orders | 4 |
+| mesh_e7 | NetworkDelay 300ms carts | carts | 3 |
+| mesh_e8 | NetworkDelay 300ms shipping | shipping | 6 |
+| mesh_e9 | Pod-Kill orders | orders | 4 |
+
+默认每个场景重复 10 次，采集窗口为 baseline 600s + fault 600s。`run_mesh_experiments.py` 默认会先等待对应窗口，再查询 Prometheus 最近窗口数据，保证 baseline 和 fault 数据覆盖真实实验阶段；`--no-wait` 只用于快速验证脚本管线。每次运行的数据保存到：
+
+```text
+data/sockshop_mesh/<exp>/runXX/
+dycause_rca/data/<exp>_mesh_runXX/rawdata.xlsx
+```
+
+### 7.4 数据质量控制
+
+每次采集会记录每个服务的：
+
+- expected points
+- valid points
+- missing points
+- zero points
+- valid ratio
+
+默认要求每列有效采样点比例不低于 95%。低于阈值的 run 会在 `quality.json` 和 `data/sockshop_mesh/summary.csv` 中标记为 invalid，不应进入主结果统计。
+
+### 7.4.1 负载生成器调整
+
+压缩批量实验后发现，旧版 `load-gen` 主要直接请求各个后端服务，虽然能保证 7 列 mesh latency 数据完整，但会削弱服务间自然调用链，导致 DyCause 构造出的因果边不稳定。为改善这一点，新增 `experiment/load-gen-business.yaml`：
+
+- 主流量走 front-end 页面和 front-end API proxy，包括 `/`、`/category.html`、`/detail.html`、`/basket.html`、`/catalogue`、`/tags`、`/customers`、`/cards`、`/cart`、`/orders`；
+- 每 5 轮保留一次低频 direct coverage probe，覆盖 catalogue、carts、orders、payment、shipping、user；
+- load-gen Pod 仍关闭 Istio sidecar 注入，避免把负载源本身纳入 mesh 节点。
+
+修改后验证 Prometheus 中 7 个 destination workload 均有请求速率；单独运行 `collect_istio_latency.py --duration 60 --rate-window 15s` 得到 60×7 数据，7 个服务有效采样点比例均为 100%。后续重复实验应使用该业务链式负载重新采集，以比较 DyCause 准确率是否改善。
+
+业务链式 load 的首个 `mesh_e3` 验证 run 已完成，输出到 `data/sockshop_mesh_business/mesh_e3/run01/`，数据为 600×7 且 7 个服务有效采样点比例均为 100%。默认旧主参数 `lag=7, step=30, edge_thres=0.8` 下 payment 根因 rank=4，PR@5=1.0，Acc=0.5714。对同一份数据做参数敏感性后，`lag=5, step=20/30/60, edge_thres=0.8` 可将 payment 排到第 2，PR@2=1.0，Acc=0.8571。因此业务链式 load 的后续批量实验建议主参数改为 `lag=5, step=30, edge_thres=0.8`。
+
+### 7.5 参数敏感性分析
+
+增强脚本支持 DyCause 参数网格：
+
+| 参数 | 取值 |
+|------|------|
+| `lag` | 3, 5, 7 |
+| `step` | 20, 30, 60 |
+| `edge_thres` | 0.4, 0.6, 0.8 |
+
+运行方式：
+
+```bash
+cd experiment
+python run_mesh_experiments.py --exp mesh_e1 --repeat 1 --run-dycause --sensitivity
+```
+
+该设计将原先“单次、4 节点、2 场景”的初步复现扩展为“多次、7 节点、多对象、带数据质量记录与参数敏感性”的完整改进版实验。
+
+### 7.5.1 候选对象筛选设计
+
+`mesh_e2/e4/e5` 在业务链式 load 下表现较差，应作为 negative cases / threat to validity 分析，而不再作为主结果核心对象。新增候选对象使用 `experiment/load-gen-checkout.yaml` 和独立数据目录：
+
+```text
+data/sockshop_mesh_candidate/<exp>/runXX/
+dycause_rca/data/candidate_<exp>_mesh_runXX/rawdata.xlsx
+```
+
+候选筛选先对 `mesh_e6/e7/e8/e9` 各跑 1 次 `300s baseline + 300s fault`，主参数为 `lag=5, step=30, edge_thres=0.8, rate_window=15s`。若 root rank 进入 Top-2，或 PR@5=1 且参数敏感性存在稳定 Top-2 组合，则进入短重复验证。
+
+首轮候选筛选已经完成，4 个 run 均为 600×7，7 个服务有效采样比例均达到 100%。结果如下：
+
+| Experiment | Root | Fault | Root Rank | PR@1 | PR@2 | PR@5 | Acc | Fault/Baseline |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| mesh_e6 | orders | NetworkDelay 300ms | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 24.6051 |
+| mesh_e7 | carts | NetworkDelay 300ms | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 24.0286 |
+| mesh_e8 | shipping | NetworkDelay 300ms | — | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.7531 |
+| mesh_e9 | orders | Pod-Kill | 2 | 0.0000 | 1.0000 | 1.0000 | 0.8571 | 6.4925 |
+
+因此，后续短重复验证应优先选择 `mesh_e6`、`mesh_e7`、`mesh_e9`。`mesh_e8` 可保留为 shipping 对象不适合当前 checkout load 的负例。
+
+### 7.6 mesh_e1 正式单次结果
+
+已完成 `mesh_e1` 的正式单次实验：baseline 600s + fault 600s，输出数据为 1200×7，7 个服务有效采样点均为 1200/1200。默认 4 节点参数 `lag=5, step=30, edge_thres=0.7` 在 mesh 数据上未形成有效回溯路径，PR@K=0。修正 DyCause 根因编号后，同一份数据在 `lag=7, step=30, edge_thres=0.8` 下可将 payment 排到第 2：
+
+| Exp | Params | Root Rank | PR@1 | PR@2 | PR@5 | Acc |
+|-----|--------|----------:|-----:|-----:|-----:|----:|
+| mesh_e1 | lag=7, step=30, edge=0.8 | 2 | 0.00 | 1.00 | 1.00 | 0.8571 |
+| mesh_e1 | lag=7, step=30, edge=0.4/0.6 | 3 | 0.00 | 0.00 | 1.00 | 0.7143 |
+| mesh_e3 | lag=7, step=30, edge=0.8 | 1 | 1.00 | 1.00 | 1.00 | 1.0000 |
+| mesh_e2 | lag=3/5/7, step=30, edge=0.4/0.6/0.8 | — | 0.00 | 0.00 | 0.00 | 0.0000 |
+| mesh_e4 | lag=3/5/7, step=20/30/60, edge=0.4/0.6/0.8 | — | 0.00 | 0.00 | 0.00 | 0.0000 |
+
+注意：DyCause 日志中的服务编号为 1-based，front-end 入口仍按命令行参数 `0` 传入。mesh 实验的根因编号因此为 catalogue=2、payment=5、user=7。早期按 0-based 编号的结果需要废弃。`mesh_e2` 和 `mesh_e4` 的正式单次数据质量同样为 1200×7、100% 有效点，但 user 相关故障在已测试参数网格中未进入 Top-K，说明 Service Mesh 已解决节点覆盖和数据密度问题，但不同服务和故障类型仍存在可诊断性差异。
+
+业务链式 load 下，`mesh_e1` 到 `mesh_e5` 已各完成 1 次压缩正式采集。`mesh_e1` 和 `mesh_e3` 均可将 payment 排到第 2，`mesh_e2/e4/e5` 暂未命中，原因主要是 user 流量弱、Pod-Kill 后可能失败更快返回，以及 user/catalogue delay 与 front-end 几乎同步抬升，时序差不足。
+
+### 7.7 压缩批量实验结果
+
+为在本地 Minikube 资源限制下尽量一次跑完重复实验，新增压缩批量脚本 `experiment/run_compressed_mesh_batch.py`。该批次使用 `baseline=300s`、`fault=300s`、`delay=15s`、`rate_window=15s`，DyCause 主参数为 `lag=7, step=30, edge_thres=0.8`。批次新增 19 个 run：
+
+- `mesh_e1`、`mesh_e3`、`mesh_e5` 各 5 次；
+- `mesh_e2`、`mesh_e4` 各 2 次，作为 user 服务相关边界/负例场景。
+
+所有新增 run 的数据质量均有效，7 个服务每列有效采样点比例均达到 100%。汇总文件为：
+
+```text
+data/sockshop_mesh/compressed_summary.csv
+data/sockshop_mesh/compressed_results.md
+```
+
+注意：该压缩批次使用的是旧 direct-service load。之后改用 `experiment/load-gen-business.yaml` 后，新数据应写入独立目录：
+
+```text
+data/sockshop_mesh_business/<exp>/runXX/
+dycause_rca/data/business_<exp>_mesh_runXX/rawdata.xlsx
+```
+
+对应 metadata 中 `load_profile=business-front-proxy-v1`。旧数据根 `data/sockshop_mesh/` 保留为 direct-service load 的结果，不再用 run 编号推断新旧。
+
+压缩批次主参数结果如下：
+
+| Experiment | Runs | Valid | PR@1 | PR@2 | PR@5 | Acc mean | Acc std | Top-2 hit | Root ranks |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| mesh_e1 | 5 | 5 | 0.8000 | 0.8000 | 0.8000 | 0.8000 | 0.4000 | 0.8000 | 1, -, 1, 1, 1 |
+| mesh_e2 | 2 | 2 | 0.5000 | 0.5000 | 0.5000 | 0.5000 | 0.5000 | 0.5000 | 1, - |
+| mesh_e3 | 5 | 5 | 0.2000 | 0.4000 | 0.6000 | 0.4571 | 0.4180 | 0.4000 | 5, -, 2, 1, - |
+| mesh_e4 | 2 | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | -, - |
+| mesh_e5 | 5 | 5 | 0.0000 | 0.2000 | 0.2000 | 0.1714 | 0.3428 | 0.2000 | -, -, -, 2, - |
+
+该结果说明，压缩窗口能显著降低总运行时间并保持 100% 数据有效性，但诊断稳定性低于部分 600s 长窗口结果，尤其是 `mesh_e3` 在 600s 单次中可达到 root rank=1，而压缩 300s 重复中波动明显。因此，报告主线可采用压缩批次作为重复性统计，并用 600s 单次作为长窗口稳健性对照。

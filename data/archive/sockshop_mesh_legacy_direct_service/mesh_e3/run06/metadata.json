@@ -1,0 +1,72 @@
+{
+  "experiment": "mesh_e3",
+  "run": "run06",
+  "desc": "Istio latency + NetworkDelay 300ms: payment",
+  "root_cause": "payment",
+  "root_cause_indices": [
+    5
+  ],
+  "frontend_idx": 0,
+  "services": [
+    "front-end",
+    "catalogue",
+    "carts",
+    "orders",
+    "payment",
+    "shipping",
+    "user"
+  ],
+  "anomaly_start_second": 315,
+  "baseline_seconds": 300,
+  "fault_seconds": 300,
+  "delay_seconds": 15,
+  "rate_window": "15s",
+  "chaos_apply_epoch": 1781546420,
+  "dycause_dataset": "mesh_e3_mesh_run06",
+  "dycause_data_dir": "D:\\project\\homework\\sockshop\\dycause_rca\\data\\mesh_e3_mesh_run06",
+  "dycause_cmd": "D:\\py\\python.exe main_dycause_mp.py mesh_e3_mesh_run06 0 5 --start 315 --bef 300 --aft 300 --lag 7 --step 30 --edge_thres 0.8 --verbose 2",
+  "dycause_results": [
+    {
+      "params": {
+        "lag": 7,
+        "step": 30,
+        "edge_thres": 0.8
+      },
+      "returncode": 0,
+      "log_path": "D:\\project\\homework\\sockshop\\data\\sockshop_mesh\\mesh_e3\\run06\\dycause_lag7_step30_edge0.8.log",
+      "tail": [
+        "          Abnormal score                : Not calculated",
+        "-------------Granger interval based impact graph construction phase-------------",
+        "          Calculating granger intervals:",
+        "               bef len      :300",
+        "               aft len      :300",
+        "               lag          :7",
+        "               significant  :0.1",
+        "               step         :30",
+        "               min len      :30",
+        "               max len      :600",
+        "               segment split: [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540, 570, 600]",
+        "----------------------Back trace root cause analysis phase----------------------",
+        "************** Entry:  0 ***************",
+        "               BFS Queue Len:     1 Output queue size:      0",
+        "               BFS Queue Len:     1 Output queue size:      0",
+        "               BFS Queue Len:     2 Output queue size:      0",
+        "               BFS Queue Len:     1 Output queue size:      1",
+        "               BFS Queue Len:     2 Output queue size:      1",
+        "               BFS Queue Len:     2 Output queue size:      1",
+        "               BFS Queue Len:     1 Output queue size:      1",
+        "               BFS Queue Len:     1 Output queue size:      1",
+        "",
+        "0.7665,[0, 6, 3]",
+        "|    Node|       Score|",
+        "|       6|   0.1955012|",
+        "|       3|   0.0120930|",
+        "  PR@1    PR@2    PR@3    PR@4    PR@5    PR@Avg     Acc",
+        "------  ------  ------  ------  ------  --------  ------",
+        "0.0000  0.0000  0.0000  0.0000  0.0000    0.0000  0.0000",
+        "Used time: 13.6245 seconds"
+      ]
+    }
+  ],
+  "quality_valid": true
+}

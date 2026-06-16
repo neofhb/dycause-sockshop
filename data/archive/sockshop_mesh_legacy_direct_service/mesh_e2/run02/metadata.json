@@ -1,0 +1,72 @@
+{
+  "experiment": "mesh_e2",
+  "run": "run02",
+  "desc": "Istio latency + Pod-Kill: user",
+  "root_cause": "user",
+  "root_cause_indices": [
+    7
+  ],
+  "frontend_idx": 0,
+  "services": [
+    "front-end",
+    "catalogue",
+    "carts",
+    "orders",
+    "payment",
+    "shipping",
+    "user"
+  ],
+  "anomaly_start_second": 315,
+  "baseline_seconds": 300,
+  "fault_seconds": 300,
+  "delay_seconds": 15,
+  "rate_window": "15s",
+  "chaos_apply_epoch": 1781550484,
+  "dycause_dataset": "mesh_e2_mesh_run02",
+  "dycause_data_dir": "D:\\project\\homework\\sockshop\\dycause_rca\\data\\mesh_e2_mesh_run02",
+  "dycause_cmd": "D:\\py\\python.exe main_dycause_mp.py mesh_e2_mesh_run02 0 7 --start 315 --bef 300 --aft 300 --lag 7 --step 30 --edge_thres 0.8 --verbose 2",
+  "dycause_results": [
+    {
+      "params": {
+        "lag": 7,
+        "step": 30,
+        "edge_thres": 0.8
+      },
+      "returncode": 0,
+      "log_path": "D:\\project\\homework\\sockshop\\data\\sockshop_mesh\\mesh_e2\\run02\\dycause_lag7_step30_edge0.8.log",
+      "tail": [
+        "               BFS Queue Len:     4 Output queue size:      2",
+        "               BFS Queue Len:     5 Output queue size:      2",
+        "               BFS Queue Len:     5 Output queue size:      2",
+        "               BFS Queue Len:     6 Output queue size:      2",
+        "               BFS Queue Len:     7 Output queue size:      2",
+        "               BFS Queue Len:     7 Output queue size:      2",
+        "               BFS Queue Len:     6 Output queue size:      2",
+        "               BFS Queue Len:     5 Output queue size:      3",
+        "               BFS Queue Len:     4 Output queue size:      3",
+        "               BFS Queue Len:     3 Output queue size:      4",
+        "               BFS Queue Len:     3 Output queue size:      4",
+        "               BFS Queue Len:     2 Output queue size:      4",
+        "               BFS Queue Len:     1 Output queue size:      5",
+        "",
+        "0.5435,[0, 5, 3]",
+        "0.3832,[0, 5, 2, 7, 1, 6]",
+        "0.3717,[0, 1, 6]",
+        "0.2916,[0, 4, 7, 5, 3]",
+        "0.2151,[0, 4, 7, 1, 6]",
+        "0.1002,[0, 5, 7, 1, 6]",
+        "|    Node|       Score|",
+        "|       7|   1.0266667|",
+        "|       5|   0.3102002|",
+        "|       3|   0.1623474|",
+        "|       6|   0.1148314|",
+        "|       1|   0.0594587|",
+        "  PR@1    PR@2    PR@3    PR@4    PR@5    PR@Avg     Acc",
+        "------  ------  ------  ------  ------  --------  ------",
+        "1.0000  1.0000  1.0000  1.0000  1.0000    1.0000  1.0000",
+        "Used time: 14.7318 seconds"
+      ]
+    }
+  ],
+  "quality_valid": true
+}
