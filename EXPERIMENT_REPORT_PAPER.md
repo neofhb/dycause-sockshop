@@ -12,6 +12,8 @@ DyCause 原文中与本文复现相关的核心流程是：以服务级时间序
 
 本文复现沿用这一设置。实验对象为 SockShop 微服务示例系统，观测节点扩展为 7 个 HTTP 服务：`front-end`、`catalogue`、`carts`、`orders`、`payment`、`shipping` 和 `user`。异常入口服务固定为 `front-end`，根因服务使用 DyCause 内部 1-based 编号，例如 `payment=5`、`user=7`。
 
+实验过程中使用负载生成器持续产生 HTTP 请求，并通过 ChaosMesh 注入 Pod-Kill、NetworkDelay、NetworkLoss、NetworkCorrupt 和 CPUStress 等故障，用于构造故障前后对比窗口。
+
 输入指标为 Istio destination latency，由 `istio_request_duration_milliseconds_sum/count` 转换为秒。输出按 1Hz 采样，每个点由 15s rate window 计算，以降低低流量服务的 NaN 风险。当前主线数据目录为 `data/sockshop_mesh_extended/`，主参数为 `lag=7`、`step=30`、`edge_thres=0.8`。该参数下 87/87 个 run 通过质量检查，DyCause 全部成功运行；最低服务有效率为 97.5%，总缺失点为 44，总零值点为 0。
 
 ## 3. 复现数据结果
