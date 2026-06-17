@@ -4,7 +4,7 @@
 
 本文在 SockShop 微服务系统上复现 DyCause 动态因果根因定位方法。实验使用 Istio Service Mesh 采集 7 个 HTTP 服务的请求延迟时间序列，并在 Pod-Kill、NetworkDelay、NetworkLoss、NetworkCorrupt 和 CPUStress 等故障下评估根因排名。当前主线共包含 87 个质量有效 run，DyCause 参数固定为 `lag=7`、`step=30`、`edge_thres=0.8`，窗口为故障前 300s 与故障后 300s。
 
-报告先介绍 DyCause 复现方法和 SockShop 数据结果，再介绍 Pearson、z-shift、path-only 与融合方法等对比实验。结果显示，SockShop 数据质量稳定，但原始 DyCause 在全部有效 run 上的 Top-1、Top-2、Top-5 仅为 13.8%、21.8%、35.6%，平均准确率为 0.310。对比实验进一步表明，DyCause 的 path/backtrace 在开源 `pymicro` 数据上有效，但在 SockShop 中呈现稀疏、场景依赖和融合收益有限的特点。
+报告先介绍 DyCause 复现方法和 SockShop 数据结果，再介绍 Pearson、z-shift、path-only 与融合方法等对比实验。结果显示，SockShop 数据质量稳定，但原始 DyCause 在全部有效 run 上的 Top-1、Top-2、Top-5 仅为 13.8%、21.8%、35.6%，平均准确率为 0.310。对比实验进一步表明，DyCause 的 path/backtrace 在 DyCause 原论文开源实验数据 `pymicro` 上有效，但在 SockShop 中呈现稀疏、场景依赖和融合收益有限的特点。
 
 ## 2. 复现方法与数据采集
 
@@ -42,7 +42,7 @@ Path candidate 过滤是对比实验中的关键公平性问题。原始 DyCause
 
 与简单基线相比，原始 DyCause 在 SockShop Extended 上不占优。87 个 run 中，DyCause 的 Top-2/Top-5 为 21.8%/35.6%；Pearson 入口相关性达到 37.9%/75.9%；z-shift 均值漂移达到 67.8%/90.8%；随机 Top-5 期望为 83.3%。这说明当前 SockShop 数据中，动态因果图和 backtrace 没有稳定转化为更好的精确 ranking；很多故障更接近 root 自身异常强度识别或入口相关性排序问题。
 
-Scoring ablation 表明，DyCause 的 path/backtrace 并非理论上无效。在开源 `pymicro` 上，Pearson-only 无法命中 root，而 `path_only`、`normalized_path_plus_pearson` 和适度 λ 加权均能把 root 排到 Top-1。相反，在 SockShop Extended 上，`path_only` 的 Top-5 达到 88.5%，但 Top-2 和 MRR 仍低于 Pearson，说明路径信号更像宽召回信号，而不是稳定精排信号。
+Scoring ablation 表明，DyCause 的 path/backtrace 并非理论上无效。在 DyCause 原论文开源实验数据 `pymicro` 上，Pearson-only 无法命中 root，而 `path_only`、`normalized_path_plus_pearson` 和适度 λ 加权均能把 root 排到 Top-1。相反，在 SockShop Extended 上，`path_only` 的 Top-5 达到 88.5%，但 Top-2 和 MRR 仍低于 Pearson，说明路径信号更像宽召回信号，而不是稳定精排信号。
 
 ![DyCause 路径机制与融合方法消融](experiment/figures/paper_report/fig4_scoring_ablation.png)
 
@@ -50,8 +50,8 @@ Scoring ablation 表明，DyCause 的 path/backtrace 并非理论上无效。在
 
 ## 6. 讨论与结论
 
-`pymicro` 与 SockShop 的差异首先来自数据机制。`pymicro` 是可控延迟注入数据，因果链清晰，root 更容易进入有效 path candidate。SockShop 则包含 Istio latency 指标噪声、低流量窗口、多类故障和真实服务行为差异，服务延迟可能同步波动，但不一定形成稳定的 Granger 方向边。
+DyCause 原论文开源实验数据 `pymicro` 与 SockShop 的差异首先来自数据机制。`pymicro` 是可控延迟注入数据，因果链清晰，root 更容易进入有效 path candidate。SockShop 则包含 Istio latency 指标噪声、低流量窗口、多类故障和真实服务行为差异，服务延迟可能同步波动，但不一定形成稳定的 Granger 方向边。
 
-本文完成了 SockShop + Istio 7 服务 latency 场景下的 DyCause 复现实验。87 个主线 run 均可用于统计。DyCause 能在 `payment` Pod-Kill、`payment` NetworkDelay、`payment` NetworkCorrupt 和 `orders` Pod-Kill 等场景中复现一定的入口回溯能力，但整体低于 Pearson 和 z-shift。主要结论是：DyCause path/backtrace 在 `pymicro` 上有效，在 SockShop 上则是稀疏且场景依赖的信号；保留全服务 ranking 可以修正候选过滤带来的直接删除问题，但后续仍需要更稳健的 path score 构造、归一化和故障类型自适应融合。
+本文完成了 SockShop + Istio 7 服务 latency 场景下的 DyCause 复现实验。87 个主线 run 均可用于统计。DyCause 能在 `payment` Pod-Kill、`payment` NetworkDelay、`payment` NetworkCorrupt 和 `orders` Pod-Kill 等场景中复现一定的入口回溯能力，但整体低于 Pearson 和 z-shift。主要结论是：DyCause path/backtrace 在原论文开源实验数据 `pymicro` 上有效，在 SockShop 上则是稀疏且场景依赖的信号；保留全服务 ranking 可以修正候选过滤带来的直接删除问题，但后续仍需要更稳健的 path score 构造、归一化和故障类型自适应融合。
 
 威胁有效性主要包括：故障类型和 root 服务分布不完全均衡，`payment` case 占比较高；DyCause 参数采用当前主线最佳实践，尚未按每类故障分别调参；Istio latency 本身包含服务代理和观测窗口带来的噪声。因此，本文结论更适合作为 DyCause 在真实 SockShop mesh latency 数据上的复现与适用性分析，而不是对方法理论上限的最终评判。
