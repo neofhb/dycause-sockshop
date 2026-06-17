@@ -91,7 +91,7 @@ def run_one(run_dir, params, timeout):
 
 def main():
     parser = argparse.ArgumentParser(description="Run DyCause sensitivity on existing mesh run data")
-    parser.add_argument("run_dir", help="Path such as data/sockshop_mesh/mesh_e1/run01")
+    parser.add_argument("run_dir", help="Path such as data/sockshop_mesh_extended/mesh_e1/run01")
     parser.add_argument("--lags", default="3,5,7")
     parser.add_argument("--steps", default="20,30,60")
     parser.add_argument("--edge-thres", default="0.6,0.7,0.8")

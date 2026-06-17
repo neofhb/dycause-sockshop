@@ -1,0 +1,21 @@
+case_id,dataset_group,experiment,run,root_service,entry_service,method,graph_source,root_rank,top1,top2,top5,mrr,acc,top_services,root_score,dycause_entry_arg,entry_arg_zero_based,possible_direction_bug
+business_mesh_e1_mesh_run01,sockshop_mesh_business,mesh_e1,run01,payment,front-end,pearson,rawdata,3,0.0,0.0,1.0,0.3333333333333333,0.7142857142857143,user > catalogue > payment > orders > carts > shipping,0.5186544085255668,0,True,
+business_mesh_e1_mesh_run01,sockshop_mesh_business,mesh_e1,run01,payment,front-end,anomaly_z_shift,rawdata,5,0.0,0.0,1.0,0.2,0.42857142857142855,catalogue > orders > carts > user > payment > shipping,0.16000950774539033,0,True,
+business_mesh_e1_mesh_run01,sockshop_mesh_business,mesh_e1,run01,payment,front-end,dycause,dycause_graph,2,0.0,1.0,1.0,0.5,0.8571428571428571,front-end > payment > catalogue > orders > carts > shipping,0.7083717384714255,0,True,
+business_mesh_e1_mesh_run01,sockshop_mesh_business,mesh_e1,run01,payment,front-end,dycause_reversed,reversed_graph,,0.0,0.0,0.0,0.0,0.0,,,0,True,False
+business_mesh_e2_mesh_run01,sockshop_mesh_business,mesh_e2,run01,user,front-end,pearson,rawdata,5,0.0,0.0,1.0,0.2,0.42857142857142855,orders > shipping > carts > catalogue > user > payment,0.3387018584688919,0,True,
+business_mesh_e2_mesh_run01,sockshop_mesh_business,mesh_e2,run01,user,front-end,anomaly_z_shift,rawdata,4,0.0,0.0,1.0,0.25,0.5714285714285714,shipping > carts > orders > user > payment > catalogue,0.8087423822497191,0,True,
+business_mesh_e2_mesh_run01,sockshop_mesh_business,mesh_e2,run01,user,front-end,dycause,dycause_graph,,0.0,0.0,0.0,0.0,0.0,orders > payment > shipping > front-end > carts,,0,True,
+business_mesh_e2_mesh_run01,sockshop_mesh_business,mesh_e2,run01,user,front-end,dycause_reversed,reversed_graph,,0.0,0.0,0.0,0.0,0.0,,,0,True,False
+business_mesh_e3_mesh_run01,sockshop_mesh_business,mesh_e3,run01,payment,front-end,pearson,rawdata,3,0.0,0.0,1.0,0.3333333333333333,0.7142857142857143,user > carts > payment > shipping > catalogue > orders,0.34278396201952716,0,True,
+business_mesh_e3_mesh_run01,sockshop_mesh_business,mesh_e3,run01,payment,front-end,anomaly_z_shift,rawdata,5,0.0,0.0,1.0,0.2,0.42857142857142855,shipping > carts > user > orders > payment > catalogue,0.14582751271617178,0,True,
+business_mesh_e3_mesh_run01,sockshop_mesh_business,mesh_e3,run01,payment,front-end,dycause,dycause_graph,2,0.0,1.0,1.0,0.5,0.8571428571428571,front-end > payment > shipping > carts > orders,0.2614536929785142,0,True,
+business_mesh_e3_mesh_run01,sockshop_mesh_business,mesh_e3,run01,payment,front-end,dycause_reversed,reversed_graph,,0.0,0.0,0.0,0.0,0.0,,,0,True,False
+business_mesh_e4_mesh_run01,sockshop_mesh_business,mesh_e4,run01,user,front-end,pearson,rawdata,1,1.0,1.0,1.0,1.0,1.0,user > orders > payment > carts > shipping > catalogue,0.9956919924535688,0,True,
+business_mesh_e4_mesh_run01,sockshop_mesh_business,mesh_e4,run01,user,front-end,anomaly_z_shift,rawdata,1,1.0,1.0,1.0,1.0,1.0,user > payment > orders > carts > catalogue > shipping,4.854789844253409,0,True,
+business_mesh_e4_mesh_run01,sockshop_mesh_business,mesh_e4,run01,user,front-end,dycause,dycause_graph,,0.0,0.0,0.0,0.0,0.0,,,0,True,
+business_mesh_e4_mesh_run01,sockshop_mesh_business,mesh_e4,run01,user,front-end,dycause_reversed,reversed_graph,,0.0,0.0,0.0,0.0,0.0,,,0,True,False
+business_mesh_e5_mesh_run01,sockshop_mesh_business,mesh_e5,run01,catalogue,front-end,pearson,rawdata,1,1.0,1.0,1.0,1.0,1.0,catalogue > carts > orders > shipping > payment > user,0.9952201535101346,0,True,
+business_mesh_e5_mesh_run01,sockshop_mesh_business,mesh_e5,run01,catalogue,front-end,anomaly_z_shift,rawdata,1,1.0,1.0,1.0,1.0,1.0,catalogue > carts > orders > payment > shipping > user,4.768767162747092,0,True,
+business_mesh_e5_mesh_run01,sockshop_mesh_business,mesh_e5,run01,catalogue,front-end,dycause,dycause_graph,,0.0,0.0,0.0,0.0,0.0,,,0,True,
+business_mesh_e5_mesh_run01,sockshop_mesh_business,mesh_e5,run01,catalogue,front-end,dycause_reversed,reversed_graph,,0.0,0.0,0.0,0.0,0.0,,,0,True,False

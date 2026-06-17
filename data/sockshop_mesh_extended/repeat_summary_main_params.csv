@@ -1,0 +1,5 @@
+experiment,root,fault_type,runs,top2_hits,top2_rate,top5_hits,top5_rate,acc_mean,acc_std,ranks
+el_e2,payment,network-corrupt,5,3,0.6,4,0.8,0.6857,0.37688086181179326,"1,1,,4,2"
+el_e5,orders,pod-kill,5,1,0.2,2,0.4,0.34286,0.3681188807980379,"1,,5,6,"
+el_e4,payment,cpu-stress,3,0,0.0,2,0.6666666666666666,0.4285666666666667,0.30860670043852834,"4,3,"
+el_e13,carts,network-loss,3,1,0.3333333333333333,2,0.6666666666666666,0.47619999999999996,0.40963342962539895,"5,,1"

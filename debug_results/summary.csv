@@ -1,0 +1,10 @@
+method,graph_source,cases,top1,top2,top5,mrr,acc
+anomaly_z_shift,rawdata,5,0.4,0.4,1.0,0.53,0.6857142857142857
+dycause,dycause_graph,5,0.0,0.4,0.4,0.2,0.34285714285714286
+dycause_reversed,reversed_graph,5,0.0,0.0,0.0,0.0,0.0
+path_only,score_ablation,5,0.2,0.4,0.6,0.41666666666666663,0.6
+path_plus_pearson,score_ablation,5,0.6,0.8,1.0,0.74,0.8571428571428571
+path_plus_z_shift,score_ablation,5,0.4,0.6,1.0,0.5900000000000001,0.7714285714285715
+pearson,rawdata,5,0.4,0.4,1.0,0.5733333333333334,0.7714285714285715
+pearson_only,score_ablation,5,0.4,0.4,1.0,0.5733333333333334,0.7714285714285715
+pearson_plus_z_shift,score_ablation,5,0.4,0.4,1.0,0.55,0.7428571428571429

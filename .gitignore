@@ -15,6 +15,9 @@ microservices-demo/
 # DyCause upstream (only track patches + experiment data)
 dycause_rca/
 
+# External cloned repositories
+external/
+
 # OS files
 .DS_Store
 Thumbs.db

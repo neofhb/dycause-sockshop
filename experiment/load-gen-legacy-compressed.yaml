@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: load-gen
+  namespace: sock-shop
+  annotations:
+    sidecar.istio.io/inject: "false"
+spec:
+  containers:
+  - name: load
+    image: curlimages/curl:8.6.0
+    command: ["sh", "-c"]
+    args:
+    - |
+      set +e
+      item_id="3395a43e-2d88-40de-b95f-e00e1502085b"
+      while true; do
+        curl -m 3 -so /dev/null http://front-end:80/
+        curl -m 3 -so /dev/null http://catalogue:80/catalogue
+        curl -m 3 -so /dev/null http://carts:80/carts/1
+        curl -m 3 -so /dev/null http://orders:80/orders
+        curl -m 3 -so /dev/null http://shipping:80/shipping
+        curl -m 3 -so /dev/null http://user:80/customers
+        curl -m 3 -so /dev/null -X POST http://payment:80/paymentAuth \
+          -H "Content-Type: application/json" \
+          -d '{"amount":1}'
+        curl -m 3 -so /dev/null "http://front-end:80/detail.html?id=${item_id}"
+        sleep 0.5
+      done
+  restartPolicy: Always

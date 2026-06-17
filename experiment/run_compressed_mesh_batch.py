@@ -2,11 +2,13 @@
 Run the compressed SockShop Istio mesh experiment batch.
 
 Plan:
-  - business-front-proxy-v1 is the current mainline compressed batch
-  - business-checkout-v2 is the candidate-object screening batch
-  - business-final-v3 is the formal balanced batch for final_e* experiments
-  - legacy direct-service batch has been archived
-  - 300s baseline + 300s fault, 15s rate window, main DyCause params
+  - data/sockshop_mesh_extended is the active extended compressed batch
+  - legacy-direct-v2 is the active rerun profile for replacing weaker
+    business-front-proxy data on mesh_e1/mesh_e3
+  - legacy-compressed-v1 is the older active mainline load profile
+  - business-front-proxy-v1, business-checkout-v2, and business-final-v3 are
+    historical comparison profiles and are not used for formal mainline runs
+  - 300s baseline + 300s fault, 15s rate window, lag=7 step=30 edge=0.8
 
 The script starts from the next available runXX directory and writes the normal
 per-run outputs plus <data-root>/summary.csv and results.md.
@@ -32,13 +34,17 @@ DEFAULT_PLAN = {
 }
 
 LOAD_GEN_MANIFESTS = {
+    "legacy-direct-v2": os.path.join(os.path.dirname(__file__), "load-gen-legacy-direct.yaml"),
+    "legacy-compressed-v1": os.path.join(os.path.dirname(__file__), "load-gen-legacy-compressed.yaml"),
     "business-front-proxy-v1": os.path.join(os.path.dirname(__file__), "load-gen-business.yaml"),
     "business-checkout-v2": os.path.join(os.path.dirname(__file__), "load-gen-checkout.yaml"),
     "business-final-v3": os.path.join(os.path.dirname(__file__), "load-gen-final.yaml"),
 }
-DEFAULT_DATA_ROOT = os.path.join(ROOT_DIR, "data", "sockshop_mesh_business")
-DEFAULT_LOAD_PROFILE = "business-front-proxy-v1"
-DEFAULT_DATASET_PREFIX = "business_"
+DEFAULT_DATA_ROOT = os.path.join(ROOT_DIR, "data", "sockshop_mesh_extended")
+DEFAULT_LOAD_PROFILE = "legacy-compressed-v1"
+DEFAULT_DATASET_PREFIX = ""
+DEFAULT_MINIKUBE_CPUS = 4
+DEFAULT_MINIKUBE_MEMORY = 7680
 
 
 def run_cmd(args, timeout=60, input_text=None, check=True):
@@ -83,7 +89,7 @@ def next_run_id(exp_name, data_root):
 def ensure_no_chaos():
     for exp in EXPERIMENTS:
         delete_chaos(os.path.join(CHAOS_DIR, exp["yaml"]))
-    result = run_cmd(["kubectl", "get", "podchaos,networkchaos", "-A"], timeout=30, check=False)
+    result = run_cmd(["kubectl", "get", "podchaos,networkchaos,stresschaos", "-A"], timeout=30, check=False)
     print(result.stdout.strip() or result.stderr.strip())
 
 
@@ -124,11 +130,11 @@ def check_prereqs(manifest):
     ensure_no_chaos()
 
 
-def restart_minikube(manifest):
+def restart_minikube(manifest, cpus=DEFAULT_MINIKUBE_CPUS, memory=DEFAULT_MINIKUBE_MEMORY):
     print("[resource] Restarting Minikube to release memory before continuing.")
     ensure_no_chaos()
     run_cmd(["minikube", "stop"], timeout=240, check=False)
-    run_cmd(["minikube", "start"], timeout=360)
+    run_cmd(["minikube", "start", f"--cpus={cpus}", f"--memory={memory}"], timeout=360)
     run_cmd(["kubectl", "wait", "deploy", "--all", "-n", "sock-shop", "--for=condition=Available", "--timeout=300s"], timeout=330)
     ensure_load_gen(manifest)
     check_prereqs(manifest)
@@ -142,7 +148,7 @@ def summarize(data_root):
             "--data-root",
             data_root,
             "--main-lag",
-            "5",
+            "7",
             "--main-step",
             "30",
             "--main-edge-thres",
@@ -171,10 +177,12 @@ def main():
     parser.add_argument("--dataset-prefix", default=DEFAULT_DATASET_PREFIX)
     parser.add_argument("--load-profile", default=DEFAULT_LOAD_PROFILE)
     parser.add_argument("--load-manifest", default=None)
-    parser.add_argument("--lag", type=int, default=5)
+    parser.add_argument("--lag", type=int, default=7)
     parser.add_argument("--step", type=int, default=30)
     parser.add_argument("--edge-thres", type=float, default=0.8)
     parser.add_argument("--restart-threshold", type=float, default=92.0)
+    parser.add_argument("--minikube-cpus", type=int, default=DEFAULT_MINIKUBE_CPUS)
+    parser.add_argument("--minikube-memory", type=int, default=DEFAULT_MINIKUBE_MEMORY)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
@@ -210,6 +218,7 @@ def main():
     print("Compressed batch schedule:")
     print(f"Load profile: {args.load_profile}")
     print(f"Load generator: {manifest}")
+    print(f"Minikube restart target: cpus={args.minikube_cpus} memory={args.minikube_memory}MB")
     for exp, run_id in schedule:
         print(f"  {exp['name']} run{run_id:02d}: baseline={args.baseline}s fault={args.fault}s")
     print(f"Total new runs: {len(schedule)}")
@@ -222,7 +231,7 @@ def main():
         if mem is not None:
             print(f"[resource] Minikube memory before run: {mem:.2f}%")
             if mem >= args.restart_threshold:
-                restart_minikube(manifest)
+                restart_minikube(manifest, cpus=args.minikube_cpus, memory=args.minikube_memory)
         print(f"[batch] {index}/{len(schedule)} -> {exp['name']} run{run_id:02d}")
         try:
             run_one(exp, run_id, run_args)

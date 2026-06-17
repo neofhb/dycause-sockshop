@@ -1,0 +1,15 @@
+method,graph_source,cases,top1,top2,top5,mrr,acc
+normalized_path_plus_pearson,scoring_ablation,5,0.4,0.6,0.8,0.6,0.7714285714285715
+original_dycause,original_dycause,5,0.0,0.2,0.2,0.1,0.17142857142857143
+path_only,scoring_ablation,5,0.0,0.2,0.6,0.2833333333333333,0.5428571428571429
+path_plus_pearson,scoring_ablation,5,0.4,0.4,1.0,0.5733333333333334,0.7714285714285715
+pearson_only,scoring_ablation,5,0.4,0.4,1.0,0.5733333333333334,0.7714285714285715
+pearson_plus_lambda_path_0,scoring_ablation,5,0.4,0.4,1.0,0.5733333333333334,0.7714285714285715
+pearson_plus_lambda_path_0.1,scoring_ablation,5,0.4,0.4,1.0,0.5733333333333334,0.7714285714285715
+pearson_plus_lambda_path_0.5,scoring_ablation,5,0.4,0.4,1.0,0.5733333333333334,0.7714285714285715
+pearson_plus_lambda_path_1,scoring_ablation,5,0.4,0.4,1.0,0.5733333333333334,0.7714285714285715
+pearson_plus_lambda_path_10,scoring_ablation,5,0.4,0.4,1.0,0.5733333333333334,0.7714285714285715
+pearson_plus_lambda_path_100,scoring_ablation,5,0.4,0.4,0.8,0.5666666666666667,0.7428571428571429
+pearson_plus_lambda_path_2,scoring_ablation,5,0.4,0.4,1.0,0.5733333333333334,0.7714285714285715
+pearson_plus_lambda_path_5,scoring_ablation,5,0.4,0.4,1.0,0.5733333333333334,0.7714285714285715
+pearson_plus_lambda_path_50,scoring_ablation,5,0.4,0.6,0.8,0.6,0.7714285714285715

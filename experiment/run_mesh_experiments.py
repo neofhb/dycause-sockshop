@@ -26,7 +26,7 @@ from collect_istio_latency import SERVICES, collect  # noqa: E402
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 CHAOS_DIR = os.path.join(BASE_DIR, "chaos")
-DEFAULT_DATA_ROOT = os.path.join(ROOT_DIR, "data", "sockshop_mesh_business")
+DEFAULT_DATA_ROOT = os.path.join(ROOT_DIR, "data", "sockshop_mesh_extended")
 DATA_ROOT = DEFAULT_DATA_ROOT
 DYCAUSE_ROOT = os.path.join(ROOT_DIR, "dycause_rca")
 
@@ -205,10 +205,170 @@ EXPERIMENTS = [
         "network-delay",
         "supplementary",
     ),
+    experiment(
+        "el_e1",
+        "el-e1-network-loss-payment.yaml",
+        "payment",
+        5,
+        "Extended: NetworkLoss 5% payment",
+        "extended",
+        "network-loss",
+        "core",
+    ),
+    experiment(
+        "el_e2",
+        "el-e2-network-corrupt-payment.yaml",
+        "payment",
+        5,
+        "Extended: NetworkCorrupt 2% payment",
+        "extended",
+        "network-corrupt",
+        "core",
+    ),
+    experiment(
+        "el_e3",
+        "el-e3-network-duplicate-payment.yaml",
+        "payment",
+        5,
+        "Extended: NetworkDuplicate 5% payment",
+        "extended",
+        "network-duplicate",
+        "core",
+    ),
+    experiment(
+        "el_e4",
+        "el-e4-cpu-stress-payment.yaml",
+        "payment",
+        5,
+        "Extended: CPUStress 80% payment",
+        "extended",
+        "cpu-stress",
+        "exploratory",
+    ),
+    experiment(
+        "el_e5",
+        "el-e5-pod-kill-orders.yaml",
+        "orders",
+        4,
+        "Extended: Pod-Kill orders",
+        "extended",
+        "pod-kill",
+        "core",
+    ),
+    experiment(
+        "el_e6",
+        "el-e6-network-delay-orders.yaml",
+        "orders",
+        4,
+        "Extended: NetworkDelay 300ms orders",
+        "extended",
+        "network-delay",
+        "core",
+    ),
+    experiment(
+        "el_e7",
+        "el-e7-network-loss-orders.yaml",
+        "orders",
+        4,
+        "Extended: NetworkLoss 5% orders",
+        "extended",
+        "network-loss",
+        "core",
+    ),
+    experiment(
+        "el_e8",
+        "el-e8-network-corrupt-orders.yaml",
+        "orders",
+        4,
+        "Extended: NetworkCorrupt 2% orders",
+        "extended",
+        "network-corrupt",
+        "core",
+    ),
+    experiment(
+        "el_e9",
+        "el-e9-network-duplicate-orders.yaml",
+        "orders",
+        4,
+        "Extended: NetworkDuplicate 5% orders",
+        "extended",
+        "network-duplicate",
+        "core",
+    ),
+    experiment(
+        "el_e10",
+        "el-e10-cpu-stress-orders.yaml",
+        "orders",
+        4,
+        "Extended: CPUStress 80% orders",
+        "extended",
+        "cpu-stress",
+        "exploratory",
+    ),
+    experiment(
+        "el_e11",
+        "el-e11-pod-kill-carts.yaml",
+        "carts",
+        3,
+        "Extended: Pod-Kill carts",
+        "extended",
+        "pod-kill",
+        "core",
+    ),
+    experiment(
+        "el_e12",
+        "el-e12-network-delay-carts.yaml",
+        "carts",
+        3,
+        "Extended: NetworkDelay 300ms carts",
+        "extended",
+        "network-delay",
+        "core",
+    ),
+    experiment(
+        "el_e13",
+        "el-e13-network-loss-carts.yaml",
+        "carts",
+        3,
+        "Extended: NetworkLoss 5% carts",
+        "extended",
+        "network-loss",
+        "core",
+    ),
+    experiment(
+        "el_e14",
+        "el-e14-network-corrupt-carts.yaml",
+        "carts",
+        3,
+        "Extended: NetworkCorrupt 2% carts",
+        "extended",
+        "network-corrupt",
+        "core",
+    ),
+    experiment(
+        "el_e15",
+        "el-e15-network-duplicate-carts.yaml",
+        "carts",
+        3,
+        "Extended: NetworkDuplicate 5% carts",
+        "extended",
+        "network-duplicate",
+        "core",
+    ),
+    experiment(
+        "el_e16",
+        "el-e16-cpu-stress-carts.yaml",
+        "carts",
+        3,
+        "Extended: CPUStress 80% carts",
+        "extended",
+        "cpu-stress",
+        "exploratory",
+    ),
 ]
 
 
-DEFAULT_DYCAUSE_PARAMS = {"lag": 5, "step": 30, "edge_thres": 0.8}
+DEFAULT_DYCAUSE_PARAMS = {"lag": 7, "step": 30, "edge_thres": 0.8}
 SENSITIVITY_GRID = {
     "lag": [3, 5, 7],
     "step": [20, 30, 60],
@@ -559,22 +719,22 @@ def cleanup_dycause_cache():
     if not os.path.isdir(cache_root):
         return
     for name in os.listdir(cache_root):
-        if name.startswith(("mesh_e", "business_", "candidate_", "final_")):
+        if name.startswith(("mesh_e", "business_", "candidate_", "final_", "el_e", "extended_")):
             shutil.rmtree(os.path.join(cache_root, name), ignore_errors=True)
 
 
 def main():
     parser = argparse.ArgumentParser(description="Run Istio mesh latency experiments for SockShop")
     parser.add_argument("--run-all", action="store_true")
-    parser.add_argument("--exp", default=None, help="Single experiment name: mesh_e* or final_e*")
+    parser.add_argument("--exp", default=None, help="Single experiment name: mesh_e*, final_e*, or el_e*")
     parser.add_argument("--repeat", type=int, default=10)
     parser.add_argument("--baseline", type=int, default=600)
     parser.add_argument("--fault", type=int, default=600)
     parser.add_argument("--delay", type=int, default=15)
     parser.add_argument("--rate-window", default="15s")
     parser.add_argument("--data-root", default=DEFAULT_DATA_ROOT)
-    parser.add_argument("--dataset-prefix", default="business_")
-    parser.add_argument("--load-profile", default="business-front-proxy-v1")
+    parser.add_argument("--dataset-prefix", default="")
+    parser.add_argument("--load-profile", default="legacy-compressed-v1")
     parser.add_argument("--cleanup-wait", type=int, default=30)
     parser.add_argument("--min-valid-ratio", type=float, default=0.95)
     parser.add_argument("--run-dycause", action="store_true")
@@ -583,7 +743,7 @@ def main():
     parser.add_argument(
         "--no-wait",
         action="store_true",
-        help="Query recent Prometheus history without waiting; useful only for smoke tests.",
+        help="Query recent Prometheus history without waiting; useful only for quick pipeline checks.",
     )
     args = parser.parse_args()
     global DATA_ROOT

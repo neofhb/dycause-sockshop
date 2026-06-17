@@ -1,0 +1,3 @@
+load_profile,runs,min_quality,missing,zeros
+legacy-compressed-v0,23,1.0,0,0
+legacy-compressed-v1,64,0.975,44,0

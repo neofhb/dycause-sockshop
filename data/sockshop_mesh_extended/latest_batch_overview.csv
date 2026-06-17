@@ -1,0 +1,9 @@
+experiment,root,fault_type,runs,top2,top5,pr2_rate,pr5_rate,acc_mean,min_quality
+mesh_e2,user,pod-kill,2,1.0,1.0,0.5,0.5,0.5,0.985
+el_e5,orders,pod-kill,2,1.0,1.0,0.5,0.5,0.42855,0.995
+mesh_e3,payment,network-delay,4,1.0,2.0,0.25,0.5,0.39285000000000003,1.0
+el_e4,payment,cpu-stress,2,0.0,1.0,0.0,0.5,0.2857,1.0
+el_e2,payment,network-corrupt,3,0.0,1.0,0.0,0.3333333333333333,0.19046666666666667,1.0
+el_e13,carts,network-loss,2,0.0,0.0,0.0,0.0,0.14285,1.0
+mesh_e5,catalogue,network-delay,2,0.0,0.0,0.0,0.0,0.07145,1.0
+mesh_e1,payment,pod-kill,4,0.0,0.0,0.0,0.0,0.071425,0.975

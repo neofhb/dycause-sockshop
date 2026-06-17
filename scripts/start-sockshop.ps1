@@ -3,7 +3,7 @@ param(
     [string]$Namespace = "sock-shop",
     [string]$Driver = "docker",
     [int]$Cpus = 4,
-    [int]$Memory = 7168,
+    [int]$Memory = 7680,
     [switch]$ShowServiceUrl
 )
 

@@ -74,16 +74,26 @@ Invoke-Checked -Command $kubectl -Arguments @(
 
 if ($NoSidecarDeployments.Count -gt 0) {
     Write-Host "Disabling sidecar injection for non-HTTP/non-experiment deployments..."
+    $patchFile = New-TemporaryFile
+    Set-Content -LiteralPath $patchFile -Value '{"spec":{"template":{"metadata":{"annotations":{"sidecar.istio.io/inject":"false"}}}}}' -NoNewline -Encoding UTF8
     foreach ($deployment in $NoSidecarDeployments) {
-        Invoke-Checked -Command $kubectl -Arguments @(
-            "patch",
-            "deployment",
-            $deployment,
-            "-n",
-            $Namespace,
-            "-p",
-            '{"spec":{"template":{"metadata":{"annotations":{"sidecar.istio.io/inject":"false"}}}}}'
-        )
+        try {
+            Invoke-Checked -Command $kubectl -Arguments @(
+                "patch",
+                "deployment",
+                $deployment,
+                "-n",
+                $Namespace,
+                "--type=merge",
+                "--patch-file",
+                $patchFile
+            )
+        }
+        finally {
+            if ($deployment -eq $NoSidecarDeployments[-1]) {
+                Remove-Item -LiteralPath $patchFile -Force -ErrorAction SilentlyContinue
+            }
+        }
     }
 }
 

@@ -1,0 +1,13 @@
+dataset_group,method,runs,top2_hit,top5_hit,acc
+sockshop_4svc,anomaly_z_mean_shift,2,0.5,1.0,0.625
+sockshop_4svc,dycause,2,1.0,1.0,0.75
+sockshop_4svc,pearson_entry_abs,2,0.5,1.0,0.75
+sockshop_4svc,random_expected,2,0.6666666666666666,1.0,0.75
+sockshop_mesh_business,anomaly_z_mean_shift,5,0.4,1.0,0.68572
+sockshop_mesh_business,dycause,5,0.4,0.4,0.34284
+sockshop_mesh_business,pearson_entry_abs,5,0.4,1.0,0.77144
+sockshop_mesh_business,random_expected,5,0.3333333333333333,0.8333333333333334,0.6428571428571429
+sockshop_mesh_extended,anomaly_z_mean_shift,87,0.6781609195402298,0.9080459770114943,0.8160862068965516
+sockshop_mesh_extended,dycause,87,0.21839080459770116,0.3563218390804598,0.3103425287356322
+sockshop_mesh_extended,pearson_entry_abs,87,0.3793103448275862,0.7586206896551724,0.6288908045977012
+sockshop_mesh_extended,random_expected,87,0.3333333333333333,0.8333333333333334,0.6428571428571429

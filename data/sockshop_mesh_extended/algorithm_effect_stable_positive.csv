@@ -1,0 +1,2 @@
+experiment,root,fault_type,load_profile,runs,top1,top2,top5,pr1_rate,pr2_rate,pr5_rate,acc_mean,acc_std,rank_mean,rank_median,rank_min,rank_max,min_quality
+mesh_e1,payment,pod-kill,legacy-compressed-v0,6,4.0,5.0,5.0,0.6666666666666666,0.8333333333333334,0.8333333333333334,0.8095166666666667,0.4006786763313799,1.2,1.0,1.0,2.0,1.0

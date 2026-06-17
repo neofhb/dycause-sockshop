@@ -174,7 +174,7 @@ def parse_services(value):
 
 def main():
     parser = argparse.ArgumentParser(description="Collect Istio destination latency for SockShop")
-    parser.add_argument("--output", "-o", default="data/sockshop_mesh/default")
+    parser.add_argument("--output", "-o", default="data/sockshop_mesh_extended/default")
     parser.add_argument("--duration", "-d", type=int, default=120)
     parser.add_argument("--namespace", default="sock-shop")
     parser.add_argument("--services", default=",".join(SERVICES))

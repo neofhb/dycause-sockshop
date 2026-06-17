@@ -5,11 +5,11 @@
 - `scripts/` — Minikube management helpers (start/stop/open Sock Shop).
 - `experiment/` — DyCause reproduction: data collection, chaos injection, experiment runner, tests, analysis.
 - `data/sockshop/` — collected metric datasets for DyCause (e1, e2).
-- `data/sockshop_mesh/` — generated Istio Service Mesh datasets for DyCause (7 HTTP service nodes).
+- `data/sockshop_mesh_extended/` — generated Istio Service Mesh datasets for DyCause (7 HTTP service nodes), including the former `sockshop_mesh` data.
 - `dycause_rca/` — DyCause source code (cloned from GitHub, patched for Python 3.12 compatibility).
 - `ISSTA21-DyCause.pdf` — the paper being reproduced.
 - `README.md` — deployment and code guide.
-- `EXPERIMENT_REPORT.md` — results analysis and charts.
+- `EXPERIMENT_REPORT_PAPER.md` — final paper-style experiment report.
 
 ## Minikube helper scripts (`scripts/`)
 - `start-sockshop.ps1` — starts Minikube (Docker driver, default 4 CPU / 7GB RAM), updates context, scales sock-shop deployments to 1.
@@ -53,10 +53,10 @@
   - `experiment/collect_istio_latency.py` — collects 7-service Istio latency, plus `raw_prometheus.csv` and `quality.json`.
   - `experiment/run_mesh_experiments.py` — runs `mesh_e1`..`mesh_e5`, exports to `dycause_rca/data/<exp>_mesh_runXX/rawdata.xlsx`, optionally runs DyCause and sensitivity analysis.
   - `experiment/chaos/mesh-e3-network-delay-payment.yaml`, `mesh-e4-network-delay-user.yaml`, `mesh-e5-network-delay-catalogue.yaml` — 300ms NetworkDelay scenarios.
-- Quick smoke:
+- Quick pipeline check:
   ```bash
   cd experiment
-  python collect_istio_latency.py --duration 120 --output ../data/sockshop_mesh/smoke
+  python collect_istio_latency.py --duration 120 --output ../data/sockshop_mesh_extended/quick_check
   python run_mesh_experiments.py --exp mesh_e1 --repeat 1 --baseline 120 --fault 120 --no-wait
   ```
 
@@ -107,7 +107,7 @@ kubectl wait pod/load-gen -n sock-shop --for=condition=Ready --timeout=120s
 
 `experiment/load-gen-business.yaml` uses front-end pages and front-end API proxy routes as the main traffic path, plus a low-frequency direct coverage probe every 5 loops to keep all 7 mesh latency nodes populated.
 
-Business-load mesh experiment data must be written to `data/sockshop_mesh_business/` with `--dataset-prefix business_ --load-profile business-front-proxy-v1`. Keep old direct-service load data in `data/sockshop_mesh/`; do not infer old/new from run numbers.
+Business-load mesh experiment data must be written to `data/sockshop_mesh_business/` with `--dataset-prefix business_ --load-profile business-front-proxy-v1`. Main/direct-service mesh data lives in `data/sockshop_mesh_extended/`; do not infer old/new from run numbers.
 
 ### Experiments
 

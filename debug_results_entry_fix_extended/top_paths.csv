@@ -1,0 +1,433 @@
+case_id,experiment,run,method,entry_service,entry_arg,path_rank,path_weight,path_nodes,contains_root
+extended_el_e1_mesh_run01,el_e1,run01,dycause_entry_0based_raw,front-end,0,1,1.0,shipping,False
+extended_el_e1_mesh_run01,el_e1,run01,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e10_mesh_run01,el_e10,run01,dycause_entry_0based_raw,front-end,0,1,1.0,front-end,False
+extended_el_e10_mesh_run01,el_e10,run01,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e11_mesh_run01,el_e11,run01,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_el_e11_mesh_run01,el_e11,run01,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e12_mesh_run01,el_e12,run01,dycause_entry_0based_raw,front-end,0,1,1.0,shipping,False
+extended_el_e12_mesh_run01,el_e12,run01,dycause_entry_1based_fixed,front-end,1,1,0.7546110665597433,front-end -> payment -> user -> shipping,False
+extended_el_e12_mesh_run01,el_e12,run01,dycause_entry_1based_fixed,front-end,1,2,0.7262439563690721,front-end -> payment -> catalogue -> shipping,False
+extended_el_e12_mesh_run01,el_e12,run01,dycause_entry_1based_fixed,front-end,1,3,0.46087178808428253,front-end -> payment -> catalogue -> carts,True
+extended_el_e13_mesh_run01,el_e13,run01,dycause_entry_0based_raw,front-end,0,1,0.6333098286226911,shipping -> orders -> catalogue -> payment,False
+extended_el_e13_mesh_run01,el_e13,run01,dycause_entry_0based_raw,front-end,0,2,0.6293647672550698,shipping -> orders -> catalogue -> carts,True
+extended_el_e13_mesh_run01,el_e13,run01,dycause_entry_0based_raw,front-end,0,3,0.5389133627019089,front-end,False
+extended_el_e13_mesh_run01,el_e13,run01,dycause_entry_0based_raw,front-end,0,4,0.5091560908756643,shipping -> orders -> user -> front-end,False
+extended_el_e13_mesh_run01,el_e13,run01,dycause_entry_0based_raw,front-end,0,5,0.39985218033998526,shipping -> user -> front-end,False
+extended_el_e13_mesh_run01,el_e13,run01,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e13_mesh_run02,el_e13,run02,dycause_entry_0based_raw,front-end,0,1,0.7453394706559264,carts -> catalogue -> user -> shipping -> payment,True
+extended_el_e13_mesh_run02,el_e13,run02,dycause_entry_0based_raw,front-end,0,2,0.7266973532796317,carts -> catalogue -> user -> orders -> front-end,True
+extended_el_e13_mesh_run02,el_e13,run02,dycause_entry_0based_raw,front-end,0,3,0.6832566168009206,shipping -> payment,False
+extended_el_e13_mesh_run02,el_e13,run02,dycause_entry_0based_raw,front-end,0,4,0.636651323360184,orders -> front-end,False
+extended_el_e13_mesh_run02,el_e13,run02,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e13_mesh_run03,el_e13,run03,dycause_entry_0based_raw,front-end,0,1,0.6037099494097807,payment,False
+extended_el_e13_mesh_run03,el_e13,run03,dycause_entry_0based_raw,front-end,0,2,0.3962900505902192,carts,True
+extended_el_e13_mesh_run03,el_e13,run03,dycause_entry_1based_fixed,front-end,1,1,0.6188622302133873,front-end -> orders -> shipping -> user -> payment,False
+extended_el_e13_mesh_run03,el_e13,run03,dycause_entry_1based_fixed,front-end,1,2,0.567007255508497,front-end -> orders -> shipping -> user -> carts,True
+extended_el_e13_mesh_run03,el_e13,run03,dycause_entry_1based_fixed,front-end,1,3,0.3507738936238093,front-end -> user -> payment,False
+extended_el_e13_mesh_run03,el_e13,run03,dycause_entry_1based_fixed,front-end,1,4,0.3059459459459459,front-end -> catalogue,False
+extended_el_e13_mesh_run03,el_e13,run03,dycause_entry_1based_fixed,front-end,1,5,0.24706394421402852,front-end -> user -> carts,True
+extended_el_e13_mesh_run04,el_e13,run04,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_el_e13_mesh_run04,el_e13,run04,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e13_mesh_run05,el_e13,run05,dycause_entry_0based_raw,front-end,0,1,0.6969285327374907,catalogue -> carts -> orders,True
+extended_el_e13_mesh_run05,el_e13,run05,dycause_entry_0based_raw,front-end,0,2,0.6660367185030065,catalogue -> carts -> payment -> front-end -> orders,True
+extended_el_e13_mesh_run05,el_e13,run05,dycause_entry_0based_raw,front-end,0,3,0.609177161622317,catalogue -> carts -> shipping,True
+extended_el_e13_mesh_run05,el_e13,run05,dycause_entry_0based_raw,front-end,0,4,0.5618998403883919,catalogue -> carts -> payment -> shipping,True
+extended_el_e13_mesh_run05,el_e13,run05,dycause_entry_1based_fixed,front-end,1,1,0.46642794201912263,front-end -> carts -> orders,True
+extended_el_e13_mesh_run05,el_e13,run05,dycause_entry_1based_fixed,front-end,1,2,0.456540825285338,front-end -> orders,False
+extended_el_e13_mesh_run05,el_e13,run05,dycause_entry_1based_fixed,front-end,1,3,0.3632232157931136,front-end -> carts -> payment -> shipping,True
+extended_el_e13_mesh_run05,el_e13,run05,dycause_entry_1based_fixed,front-end,1,4,0.3348008853463621,front-end -> carts -> shipping,True
+extended_el_e13_mesh_run06,el_e13,run06,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_el_e13_mesh_run06,el_e13,run06,dycause_entry_1based_fixed,front-end,1,1,0.8146592650137028,front-end -> catalogue -> payment -> user,False
+extended_el_e13_mesh_run06,el_e13,run06,dycause_entry_1based_fixed,front-end,1,2,0.6261003112824424,front-end -> carts -> shipping,True
+extended_el_e13_mesh_run06,el_e13,run06,dycause_entry_1based_fixed,front-end,1,3,0.4347810254418334,front-end -> payment -> user,False
+extended_el_e13_mesh_run06,el_e13,run06,dycause_entry_1based_fixed,front-end,1,4,0.18755282524892286,front-end -> carts -> orders,True
+extended_el_e13_mesh_run07,el_e13,run07,dycause_entry_0based_raw,front-end,0,1,0.5005138746145941,shipping,False
+extended_el_e13_mesh_run07,el_e13,run07,dycause_entry_0based_raw,front-end,0,2,0.499486125385406,carts,True
+extended_el_e13_mesh_run07,el_e13,run07,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e13_mesh_run08,el_e13,run08,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_el_e13_mesh_run08,el_e13,run08,dycause_entry_1based_fixed,front-end,1,1,0.4870283018867925,front-end -> shipping,False
+extended_el_e13_mesh_run08,el_e13,run08,dycause_entry_1based_fixed,front-end,1,2,0.4852594339622642,front-end -> orders,False
+extended_el_e13_mesh_run08,el_e13,run08,dycause_entry_1based_fixed,front-end,1,3,0.28934170964686207,front-end -> catalogue -> payment -> shipping,False
+extended_el_e13_mesh_run08,el_e13,run08,dycause_entry_1based_fixed,front-end,1,4,0.28818026946103165,front-end -> catalogue -> payment -> carts,True
+extended_el_e13_mesh_run08,el_e13,run08,dycause_entry_1based_fixed,front-end,1,5,0.2254628223947824,front-end -> catalogue -> shipping,False
+extended_el_e13_mesh_run08,el_e13,run08,dycause_entry_1based_fixed,front-end,1,6,0.0685951082538802,front-end -> catalogue -> user,False
+extended_el_e13_mesh_run09,el_e13,run09,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_el_e13_mesh_run09,el_e13,run09,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e13_mesh_run10,el_e13,run10,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_el_e13_mesh_run10,el_e13,run10,dycause_entry_1based_fixed,front-end,1,1,0.7494979887149159,front-end -> shipping -> orders -> payment -> catalogue -> carts,True
+extended_el_e13_mesh_run10,el_e13,run10,dycause_entry_1based_fixed,front-end,1,2,0.6661125462861965,front-end -> shipping -> orders -> payment -> user,False
+extended_el_e13_mesh_run10,el_e13,run10,dycause_entry_1based_fixed,front-end,1,3,0.651824034334764,front-end -> catalogue -> carts,True
+extended_el_e13_mesh_run10,el_e13,run10,dycause_entry_1based_fixed,front-end,1,4,0.5506654604476067,front-end -> payment -> catalogue -> carts,True
+extended_el_e13_mesh_run10,el_e13,run10,dycause_entry_1based_fixed,front-end,1,5,0.28447831145651314,front-end -> payment -> user,False
+extended_el_e13_mesh_run10,el_e13,run10,dycause_entry_1based_fixed,front-end,1,6,0.2238912732474964,front-end -> carts,True
+extended_el_e14_mesh_run01,el_e14,run01,dycause_entry_0based_raw,front-end,0,1,0.5326850351161534,front-end,False
+extended_el_e14_mesh_run01,el_e14,run01,dycause_entry_0based_raw,front-end,0,2,0.4673149648838466,shipping,False
+extended_el_e14_mesh_run01,el_e14,run01,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e16_mesh_run01,el_e16,run01,dycause_entry_0based_raw,front-end,0,1,0.7952956134774316,front-end -> shipping,False
+extended_el_e16_mesh_run01,el_e16,run01,dycause_entry_0based_raw,front-end,0,2,0.7118764074615977,payment -> orders -> front-end -> shipping,False
+extended_el_e16_mesh_run01,el_e16,run01,dycause_entry_0based_raw,front-end,0,3,0.6917564003191099,payment -> orders -> catalogue -> front-end -> shipping,False
+extended_el_e16_mesh_run01,el_e16,run01,dycause_entry_0based_raw,front-end,0,4,0.6049039203214085,payment -> orders -> catalogue -> user -> front-end -> shipping,False
+extended_el_e16_mesh_run01,el_e16,run01,dycause_entry_0based_raw,front-end,0,5,0.430016935790649,payment -> orders -> catalogue -> user -> carts,True
+extended_el_e16_mesh_run01,el_e16,run01,dycause_entry_0based_raw,front-end,0,6,0.1112523839796567,carts,True
+extended_el_e16_mesh_run01,el_e16,run01,dycause_entry_1based_fixed,front-end,1,1,1.0,front-end -> shipping,False
+extended_el_e2_mesh_run01,el_e2,run01,dycause_entry_0based_raw,front-end,0,1,0.7420634920634921,shipping -> payment,True
+extended_el_e2_mesh_run01,el_e2,run01,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e2_mesh_run02,el_e2,run02,dycause_entry_0based_raw,front-end,0,1,0.7436696631728151,front-end -> payment -> shipping -> carts,True
+extended_el_e2_mesh_run02,el_e2,run02,dycause_entry_1based_fixed,front-end,1,1,0.6582262175637535,front-end -> payment -> shipping -> carts,True
+extended_el_e2_mesh_run03,el_e2,run03,dycause_entry_0based_raw,front-end,0,1,0.6452387960850688,front-end -> catalogue -> user -> orders -> shipping,False
+extended_el_e2_mesh_run03,el_e2,run03,dycause_entry_0based_raw,front-end,0,2,0.3989475684349611,front-end -> orders -> shipping,False
+extended_el_e2_mesh_run03,el_e2,run03,dycause_entry_0based_raw,front-end,0,3,0.3492293206862882,orders -> shipping,False
+extended_el_e2_mesh_run03,el_e2,run03,dycause_entry_1based_fixed,front-end,1,1,0.6377052115242465,front-end -> catalogue -> user -> orders -> shipping,False
+extended_el_e2_mesh_run03,el_e2,run03,dycause_entry_1based_fixed,front-end,1,2,0.26073478548826257,front-end -> orders -> shipping,False
+extended_el_e2_mesh_run04,el_e2,run04,dycause_entry_0based_raw,front-end,0,1,0.7479191438763377,payment,True
+extended_el_e2_mesh_run04,el_e2,run04,dycause_entry_0based_raw,front-end,0,2,0.6114081996434938,orders -> user -> payment,True
+extended_el_e2_mesh_run04,el_e2,run04,dycause_entry_0based_raw,front-end,0,3,0.44890679936402744,orders -> carts -> shipping -> user -> payment,True
+extended_el_e2_mesh_run04,el_e2,run04,dycause_entry_0based_raw,front-end,0,4,0.36702358845876626,orders -> carts -> shipping -> front-end,False
+extended_el_e2_mesh_run04,el_e2,run04,dycause_entry_0based_raw,front-end,0,5,0.28445263699897655,orders -> carts -> catalogue,False
+extended_el_e2_mesh_run04,el_e2,run04,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e2_mesh_run05,el_e2,run05,dycause_entry_0based_raw,front-end,0,1,0.6674990451715547,front-end -> orders -> catalogue,False
+extended_el_e2_mesh_run05,el_e2,run05,dycause_entry_0based_raw,front-end,0,2,0.5835583153347732,front-end -> orders -> user -> payment,True
+extended_el_e2_mesh_run05,el_e2,run05,dycause_entry_0based_raw,front-end,0,3,0.5158613958028306,payment,True
+extended_el_e2_mesh_run05,el_e2,run05,dycause_entry_1based_fixed,front-end,1,1,0.7591792656587473,front-end -> orders -> catalogue,False
+extended_el_e2_mesh_run05,el_e2,run05,dycause_entry_1based_fixed,front-end,1,2,0.6166982190473078,front-end -> orders -> user -> payment,True
+extended_el_e2_mesh_run06,el_e2,run06,dycause_entry_0based_raw,front-end,0,1,0.6139318088420495,payment -> orders -> catalogue -> shipping -> carts,True
+extended_el_e2_mesh_run06,el_e2,run06,dycause_entry_0based_raw,front-end,0,2,0.48060155857928777,payment -> front-end,True
+extended_el_e2_mesh_run06,el_e2,run06,dycause_entry_0based_raw,front-end,0,3,0.43610777017110286,payment -> catalogue -> shipping -> carts,True
+extended_el_e2_mesh_run06,el_e2,run06,dycause_entry_0based_raw,front-end,0,4,0.4018691588785047,front-end,False
+extended_el_e2_mesh_run06,el_e2,run06,dycause_entry_0based_raw,front-end,0,5,0.26540099170840864,payment -> user -> front-end,True
+extended_el_e2_mesh_run06,el_e2,run06,dycause_entry_0based_raw,front-end,0,6,0.2311526479750779,carts,False
+extended_el_e2_mesh_run06,el_e2,run06,dycause_entry_0based_raw,front-end,0,7,0.20849548807393306,payment -> user -> carts,True
+extended_el_e2_mesh_run06,el_e2,run06,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e2_mesh_run07,el_e2,run07,dycause_entry_0based_raw,front-end,0,1,1.0,carts -> orders,False
+extended_el_e2_mesh_run07,el_e2,run07,dycause_entry_1based_fixed,front-end,1,1,1.0,front-end -> user -> carts -> orders,False
+extended_el_e2_mesh_run08,el_e2,run08,dycause_entry_0based_raw,front-end,0,1,0.643417094017094,shipping -> carts -> orders -> user -> catalogue,False
+extended_el_e2_mesh_run08,el_e2,run08,dycause_entry_0based_raw,front-end,0,2,0.6348312354312354,shipping -> carts -> orders -> user -> front-end,False
+extended_el_e2_mesh_run08,el_e2,run08,dycause_entry_0based_raw,front-end,0,3,0.598092722092722,shipping -> carts -> front-end,False
+extended_el_e2_mesh_run08,el_e2,run08,dycause_entry_0based_raw,front-end,0,4,0.5908918414918415,payment -> carts -> orders -> user -> catalogue,True
+extended_el_e2_mesh_run08,el_e2,run08,dycause_entry_0based_raw,front-end,0,5,0.5823059829059829,payment -> carts -> orders -> user -> front-end,True
+extended_el_e2_mesh_run08,el_e2,run08,dycause_entry_0based_raw,front-end,0,6,0.5105506345506345,payment -> carts -> front-end,True
+extended_el_e2_mesh_run08,el_e2,run08,dycause_entry_0based_raw,front-end,0,7,0.2941919191919192,catalogue,False
+extended_el_e2_mesh_run08,el_e2,run08,dycause_entry_0based_raw,front-end,0,8,0.2512626262626262,front-end,False
+extended_el_e2_mesh_run08,el_e2,run08,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e2_mesh_run09,el_e2,run09,dycause_entry_0based_raw,front-end,0,1,1.0,shipping,False
+extended_el_e2_mesh_run09,el_e2,run09,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e2_mesh_run10,el_e2,run10,dycause_entry_0based_raw,front-end,0,1,1.0,shipping,False
+extended_el_e2_mesh_run10,el_e2,run10,dycause_entry_1based_fixed,front-end,1,1,0.7740913867298262,front-end -> carts -> payment -> catalogue -> shipping,True
+extended_el_e2_mesh_run10,el_e2,run10,dycause_entry_1based_fixed,front-end,1,2,0.7584664909764153,front-end -> carts -> payment -> catalogue -> user -> shipping,True
+extended_el_e2_mesh_run10,el_e2,run10,dycause_entry_1based_fixed,front-end,1,3,0.6623900293255132,front-end -> user -> shipping,False
+extended_el_e2_mesh_run10,el_e2,run10,dycause_entry_1based_fixed,front-end,1,4,0.5805977764771173,front-end -> payment -> catalogue -> user -> shipping,True
+extended_el_e2_mesh_run10,el_e2,run10,dycause_entry_1based_fixed,front-end,1,5,0.5421413993152325,front-end -> payment -> catalogue -> shipping,True
+extended_el_e3_mesh_run01,el_e3,run01,dycause_entry_0based_raw,front-end,0,1,0.9174174174174174,orders -> front-end,False
+extended_el_e3_mesh_run01,el_e3,run01,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e4_mesh_run01,el_e4,run01,dycause_entry_0based_raw,front-end,0,1,0.8378127896200186,shipping -> front-end -> carts,False
+extended_el_e4_mesh_run01,el_e4,run01,dycause_entry_0based_raw,front-end,0,2,0.7261693482892713,orders -> shipping -> front-end -> carts,False
+extended_el_e4_mesh_run01,el_e4,run01,dycause_entry_0based_raw,front-end,0,3,0.6020080321285141,orders -> user -> shipping -> front-end -> carts,False
+extended_el_e4_mesh_run01,el_e4,run01,dycause_entry_0based_raw,front-end,0,4,0.2942630952039721,orders -> catalogue,False
+extended_el_e4_mesh_run01,el_e4,run01,dycause_entry_0based_raw,front-end,0,5,0.217742765935537,orders -> user -> payment,True
+extended_el_e4_mesh_run01,el_e4,run01,dycause_entry_0based_raw,front-end,0,6,0.1566265060240964,payment,True
+extended_el_e4_mesh_run01,el_e4,run01,dycause_entry_1based_fixed,front-end,1,1,1.0,front-end -> carts,False
+extended_el_e4_mesh_run02,el_e4,run02,dycause_entry_0based_raw,front-end,0,1,0.6914173789173789,orders -> front-end -> shipping -> catalogue -> user -> payment,True
+extended_el_e4_mesh_run02,el_e4,run02,dycause_entry_0based_raw,front-end,0,2,0.4586894586894587,payment,True
+extended_el_e4_mesh_run02,el_e4,run02,dycause_entry_1based_fixed,front-end,1,1,0.651798433048433,front-end -> shipping -> catalogue -> user -> payment,True
+extended_el_e4_mesh_run03,el_e4,run03,dycause_entry_0based_raw,front-end,0,1,0.60149594737149,shipping -> carts -> front-end -> catalogue -> user -> orders,False
+extended_el_e4_mesh_run03,el_e4,run03,dycause_entry_0based_raw,front-end,0,2,0.3835725677830941,orders,False
+extended_el_e4_mesh_run03,el_e4,run03,dycause_entry_1based_fixed,front-end,1,1,0.33084941733734485,front-end -> catalogue -> user -> orders,False
+extended_el_e4_mesh_run04,el_e4,run04,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_el_e4_mesh_run04,el_e4,run04,dycause_entry_1based_fixed,front-end,1,1,0.5756097560975609,front-end -> payment,True
+extended_el_e4_mesh_run04,el_e4,run04,dycause_entry_1based_fixed,front-end,1,2,0.5460822375225057,front-end -> carts -> shipping -> catalogue -> payment,True
+extended_el_e4_mesh_run04,el_e4,run04,dycause_entry_1based_fixed,front-end,1,3,0.5250988874415937,front-end -> carts -> catalogue -> payment,True
+extended_el_e4_mesh_run04,el_e4,run04,dycause_entry_1based_fixed,front-end,1,4,0.3324792963755213,front-end -> carts -> orders,False
+extended_el_e4_mesh_run04,el_e4,run04,dycause_entry_1based_fixed,front-end,1,5,0.311656170456854,front-end -> carts -> user,False
+extended_el_e4_mesh_run05,el_e4,run05,dycause_entry_0based_raw,front-end,0,1,0.7852557491541371,carts -> front-end -> shipping,False
+extended_el_e4_mesh_run05,el_e4,run05,dycause_entry_0based_raw,front-end,0,2,0.6697877652933832,carts -> payment,True
+extended_el_e4_mesh_run05,el_e4,run05,dycause_entry_0based_raw,front-end,0,3,0.5770911360799001,carts -> orders,False
+extended_el_e4_mesh_run05,el_e4,run05,dycause_entry_1based_fixed,front-end,1,1,0.8826086956521739,front-end -> shipping,False
+extended_el_e4_mesh_run05,el_e4,run05,dycause_entry_1based_fixed,front-end,1,2,0.22848341746729628,front-end -> carts -> payment,True
+extended_el_e4_mesh_run05,el_e4,run05,dycause_entry_1based_fixed,front-end,1,3,0.13578678825381316,front-end -> carts -> orders,False
+extended_el_e4_mesh_run06,el_e4,run06,dycause_entry_0based_raw,front-end,0,1,0.7919303797468354,shipping -> carts,False
+extended_el_e4_mesh_run06,el_e4,run06,dycause_entry_0based_raw,front-end,0,2,0.7869449831873945,shipping -> payment -> orders -> catalogue -> front-end,True
+extended_el_e4_mesh_run06,el_e4,run06,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e4_mesh_run07,el_e4,run07,dycause_entry_0based_raw,front-end,0,1,0.8197384806973848,payment -> catalogue -> orders -> front-end,True
+extended_el_e4_mesh_run07,el_e4,run07,dycause_entry_0based_raw,front-end,0,2,0.7953767123287672,payment -> catalogue -> carts -> shipping,True
+extended_el_e4_mesh_run07,el_e4,run07,dycause_entry_0based_raw,front-end,0,3,0.7387920298879203,payment -> catalogue -> shipping,True
+extended_el_e4_mesh_run07,el_e4,run07,dycause_entry_0based_raw,front-end,0,4,0.6887712743877127,payment -> catalogue -> front-end,True
+extended_el_e4_mesh_run07,el_e4,run07,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e4_mesh_run08,el_e4,run08,dycause_entry_0based_raw,front-end,0,1,0.7876736645453362,carts -> catalogue -> orders -> front-end -> shipping,False
+extended_el_e4_mesh_run08,el_e4,run08,dycause_entry_0based_raw,front-end,0,2,0.6242274830830689,carts -> catalogue -> orders -> user -> shipping,False
+extended_el_e4_mesh_run08,el_e4,run08,dycause_entry_0based_raw,front-end,0,3,0.6201985521327187,carts -> catalogue -> payment,True
+extended_el_e4_mesh_run08,el_e4,run08,dycause_entry_0based_raw,front-end,0,4,0.4064343163538874,shipping,False
+extended_el_e4_mesh_run08,el_e4,run08,dycause_entry_1based_fixed,front-end,1,1,1.0,front-end -> shipping,False
+extended_el_e4_mesh_run09,el_e4,run09,dycause_entry_0based_raw,front-end,0,1,0.7116320277603455,carts -> orders -> payment,True
+extended_el_e4_mesh_run09,el_e4,run09,dycause_entry_0based_raw,front-end,0,2,0.6401294498381878,carts -> orders -> front-end -> user -> shipping,False
+extended_el_e4_mesh_run09,el_e4,run09,dycause_entry_0based_raw,front-end,0,3,0.5444259867678968,carts -> orders -> catalogue,False
+extended_el_e4_mesh_run09,el_e4,run09,dycause_entry_0based_raw,front-end,0,4,0.5155893536121673,shipping,False
+extended_el_e4_mesh_run09,el_e4,run09,dycause_entry_1based_fixed,front-end,1,1,0.7837240208202592,front-end -> user -> carts -> orders -> payment,True
+extended_el_e4_mesh_run09,el_e4,run09,dycause_entry_1based_fixed,front-end,1,2,0.7577946768060837,front-end -> user -> shipping,False
+extended_el_e4_mesh_run09,el_e4,run09,dycause_entry_1based_fixed,front-end,1,3,0.6583194900759226,front-end -> user -> carts -> orders -> catalogue,False
+extended_el_e4_mesh_run10,el_e4,run10,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_el_e4_mesh_run10,el_e4,run10,dycause_entry_1based_fixed,front-end,1,1,0.7133877879931138,front-end -> catalogue -> payment -> user,True
+extended_el_e4_mesh_run10,el_e4,run10,dycause_entry_1based_fixed,front-end,1,2,0.7096914127970028,front-end -> catalogue -> carts -> orders,False
+extended_el_e5_mesh_run01,el_e5,run01,dycause_entry_0based_raw,front-end,0,1,0.5871323529411765,payment -> orders,True
+extended_el_e5_mesh_run01,el_e5,run01,dycause_entry_1based_fixed,front-end,1,1,0.5348905193769157,front-end -> user -> payment -> orders,True
+extended_el_e5_mesh_run01,el_e5,run01,dycause_entry_1based_fixed,front-end,1,2,0.3719289268169794,front-end -> payment -> orders,True
+extended_el_e5_mesh_run02,el_e5,run02,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_el_e5_mesh_run02,el_e5,run02,dycause_entry_1based_fixed,front-end,1,1,0.78125,front-end -> orders,True
+extended_el_e5_mesh_run02,el_e5,run02,dycause_entry_1based_fixed,front-end,1,2,0.5106036058491193,front-end -> carts -> payment -> user,False
+extended_el_e5_mesh_run02,el_e5,run02,dycause_entry_1based_fixed,front-end,1,3,0.3262244516450648,front-end -> carts -> catalogue,False
+extended_el_e5_mesh_run03,el_e5,run03,dycause_entry_0based_raw,front-end,0,1,0.7619738751814223,catalogue -> shipping -> front-end,False
+extended_el_e5_mesh_run03,el_e5,run03,dycause_entry_0based_raw,front-end,0,2,0.7402717749450091,catalogue -> carts -> payment -> front-end,False
+extended_el_e5_mesh_run03,el_e5,run03,dycause_entry_0based_raw,front-end,0,3,0.6787652096374762,catalogue -> carts -> shipping -> front-end,False
+extended_el_e5_mesh_run03,el_e5,run03,dycause_entry_0based_raw,front-end,0,4,0.5351959361393324,catalogue -> orders,True
+extended_el_e5_mesh_run03,el_e5,run03,dycause_entry_0based_raw,front-end,0,5,0.5272133526850508,catalogue -> front-end,False
+extended_el_e5_mesh_run03,el_e5,run03,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e5_mesh_run04,el_e5,run04,dycause_entry_0based_raw,front-end,0,1,0.6051368685267848,orders -> payment -> shipping -> front-end,True
+extended_el_e5_mesh_run04,el_e5,run04,dycause_entry_0based_raw,front-end,0,2,0.5331715512413664,orders -> catalogue -> user -> front-end,True
+extended_el_e5_mesh_run04,el_e5,run04,dycause_entry_0based_raw,front-end,0,3,0.5318181818181819,front-end,False
+extended_el_e5_mesh_run04,el_e5,run04,dycause_entry_0based_raw,front-end,0,4,0.4820351876050028,orders -> catalogue -> user -> carts,True
+extended_el_e5_mesh_run04,el_e5,run04,dycause_entry_0based_raw,front-end,0,5,0.3272727272727273,carts,False
+extended_el_e5_mesh_run04,el_e5,run04,dycause_entry_0based_raw,front-end,0,6,0.31378428107821876,orders -> payment -> front-end,True
+extended_el_e5_mesh_run04,el_e5,run04,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e5_mesh_run05,el_e5,run05,dycause_entry_0based_raw,front-end,0,1,0.8026192703461179,carts,False
+extended_el_e5_mesh_run05,el_e5,run05,dycause_entry_0based_raw,front-end,0,2,0.5588040116763187,payment -> shipping -> carts,False
+extended_el_e5_mesh_run05,el_e5,run05,dycause_entry_0based_raw,front-end,0,3,0.3591747121394041,payment -> carts,False
+extended_el_e5_mesh_run05,el_e5,run05,dycause_entry_1based_fixed,front-end,1,1,0.8263437684583579,front-end -> payment -> shipping -> carts,False
+extended_el_e5_mesh_run05,el_e5,run05,dycause_entry_1based_fixed,front-end,1,2,0.7604843473124631,front-end -> payment -> carts,False
+extended_el_e5_mesh_run06,el_e5,run06,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_el_e5_mesh_run06,el_e5,run06,dycause_entry_1based_fixed,front-end,1,1,0.7291691937570759,front-end -> shipping -> carts -> catalogue -> payment,False
+extended_el_e5_mesh_run06,el_e5,run06,dycause_entry_1based_fixed,front-end,1,2,0.6774657663485902,front-end -> carts -> catalogue -> payment,False
+extended_el_e5_mesh_run06,el_e5,run06,dycause_entry_1based_fixed,front-end,1,3,0.6197941937570759,front-end -> shipping -> carts -> catalogue -> user,False
+extended_el_e5_mesh_run06,el_e5,run06,dycause_entry_1based_fixed,front-end,1,4,0.5316324330152569,front-end -> carts -> catalogue -> user,False
+extended_el_e5_mesh_run07,el_e5,run07,dycause_entry_0based_raw,front-end,0,1,0.8461622058291263,payment -> orders -> shipping,True
+extended_el_e5_mesh_run07,el_e5,run07,dycause_entry_0based_raw,front-end,0,2,0.7301733347117406,front-end -> carts -> user -> payment -> orders -> shipping,True
+extended_el_e5_mesh_run07,el_e5,run07,dycause_entry_0based_raw,front-end,0,3,0.7105754378363571,payment -> orders -> carts -> catalogue -> shipping,True
+extended_el_e5_mesh_run07,el_e5,run07,dycause_entry_0based_raw,front-end,0,4,0.5724030535781192,front-end -> carts -> catalogue -> shipping,False
+extended_el_e5_mesh_run07,el_e5,run07,dycause_entry_1based_fixed,front-end,1,1,0.8629914411445345,front-end -> carts -> user -> payment -> orders -> shipping,True
+extended_el_e5_mesh_run07,el_e5,run07,dycause_entry_1based_fixed,front-end,1,2,0.7411764705882353,front-end -> carts -> catalogue -> shipping,False
+extended_el_e5_mesh_run08,el_e5,run08,dycause_entry_0based_raw,front-end,0,1,0.7716655716162943,shipping -> orders -> carts -> catalogue -> payment,True
+extended_el_e5_mesh_run08,el_e5,run08,dycause_entry_0based_raw,front-end,0,2,0.7708333333333334,shipping -> orders -> payment,True
+extended_el_e5_mesh_run08,el_e5,run08,dycause_entry_1based_fixed,front-end,1,1,0.7716655716162943,front-end -> shipping -> orders -> carts -> catalogue -> payment,True
+extended_el_e5_mesh_run08,el_e5,run08,dycause_entry_1based_fixed,front-end,1,2,0.7708333333333334,front-end -> shipping -> orders -> payment,True
+extended_el_e5_mesh_run09,el_e5,run09,dycause_entry_0based_raw,front-end,0,1,0.760985624295922,front-end -> shipping -> orders -> payment,True
+extended_el_e5_mesh_run09,el_e5,run09,dycause_entry_0based_raw,front-end,0,2,0.7337150423965549,shipping -> orders -> payment,True
+extended_el_e5_mesh_run09,el_e5,run09,dycause_entry_0based_raw,front-end,0,3,0.6394731615437955,carts -> orders -> payment,True
+extended_el_e5_mesh_run09,el_e5,run09,dycause_entry_1based_fixed,front-end,1,1,0.907056345444971,front-end -> shipping -> orders -> payment,True
+extended_el_e5_mesh_run10,el_e5,run10,dycause_entry_0based_raw,front-end,0,1,0.577267811104823,carts -> shipping,False
+extended_el_e5_mesh_run10,el_e5,run10,dycause_entry_0based_raw,front-end,0,2,0.5754838709677419,catalogue,False
+extended_el_e5_mesh_run10,el_e5,run10,dycause_entry_0based_raw,front-end,0,3,0.40034895139849375,carts -> payment -> front-end,False
+extended_el_e5_mesh_run10,el_e5,run10,dycause_entry_0based_raw,front-end,0,4,0.3910031325280693,carts -> payment -> user -> catalogue,False
+extended_el_e5_mesh_run10,el_e5,run10,dycause_entry_0based_raw,front-end,0,5,0.2979714647415312,carts -> payment -> orders,True
+extended_el_e5_mesh_run10,el_e5,run10,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e6_mesh_run01,el_e6,run01,dycause_entry_0based_raw,front-end,0,1,0.6600532670141369,catalogue -> shipping -> payment -> user -> carts,False
+extended_el_e6_mesh_run01,el_e6,run01,dycause_entry_0based_raw,front-end,0,2,0.6249111481510878,catalogue -> shipping -> payment -> user -> orders,True
+extended_el_e6_mesh_run01,el_e6,run01,dycause_entry_0based_raw,front-end,0,3,0.589903666663727,payment -> user -> catalogue -> shipping -> front-end,False
+extended_el_e6_mesh_run01,el_e6,run01,dycause_entry_0based_raw,front-end,0,4,0.5460809646856158,payment -> user -> carts,False
+extended_el_e6_mesh_run01,el_e6,run01,dycause_entry_0based_raw,front-end,0,5,0.514324084117983,catalogue -> shipping -> front-end,False
+extended_el_e6_mesh_run01,el_e6,run01,dycause_entry_0based_raw,front-end,0,6,0.48751076658053405,payment -> user -> orders,True
+extended_el_e6_mesh_run01,el_e6,run01,dycause_entry_0based_raw,front-end,0,7,0.2316968130921619,carts,False
+extended_el_e6_mesh_run01,el_e6,run01,dycause_entry_0based_raw,front-end,0,8,0.05598621877691645,orders,True
+extended_el_e6_mesh_run01,el_e6,run01,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_el_e7_mesh_run01,el_e7,run01,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_el_e7_mesh_run01,el_e7,run01,dycause_entry_1based_fixed,front-end,1,1,0.8508274231678487,front-end -> orders -> carts -> user,True
+extended_el_e8_mesh_run01,el_e8,run01,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_el_e8_mesh_run01,el_e8,run01,dycause_entry_1based_fixed,front-end,1,1,0.7319857757813962,front-end -> catalogue -> orders -> payment,True
+extended_el_e8_mesh_run01,el_e8,run01,dycause_entry_1based_fixed,front-end,1,2,0.720943290286356,front-end -> catalogue -> user,False
+extended_el_e8_mesh_run01,el_e8,run01,dycause_entry_1based_fixed,front-end,1,3,0.5738349241998877,front-end -> catalogue -> payment,False
+extended_el_e8_mesh_run01,el_e8,run01,dycause_entry_1based_fixed,front-end,1,4,0.5558674901740595,front-end -> catalogue -> carts,False
+extended_el_e8_mesh_run01,el_e8,run01,dycause_entry_1based_fixed,front-end,1,5,0.46246824289391314,front-end -> catalogue -> shipping -> payment,False
+extended_el_e9_mesh_run01,el_e9,run01,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_el_e9_mesh_run01,el_e9,run01,dycause_entry_1based_fixed,front-end,1,1,0.65624064651302,front-end -> orders -> payment,True
+extended_el_e9_mesh_run01,el_e9,run01,dycause_entry_1based_fixed,front-end,1,2,0.6065617334099825,front-end -> orders -> catalogue -> shipping,True
+extended_el_e9_mesh_run01,el_e9,run01,dycause_entry_1based_fixed,front-end,1,3,0.5884465728823706,front-end -> orders -> user,True
+extended_el_e9_mesh_run01,el_e9,run01,dycause_entry_1based_fixed,front-end,1,4,0.5810402789779643,front-end -> orders -> carts -> user,True
+extended_el_e9_mesh_run01,el_e9,run01,dycause_entry_1based_fixed,front-end,1,5,0.5504770773253264,front-end -> orders -> catalogue -> user,True
+mesh_e1_mesh_run01,mesh_e1,run01,dycause_entry_0based_raw,front-end,0,1,0.7311159978009896,shipping -> carts,False
+mesh_e1_mesh_run01,mesh_e1,run01,dycause_entry_0based_raw,front-end,0,2,0.7052350807095558,shipping -> catalogue -> front-end -> carts,False
+mesh_e1_mesh_run01,mesh_e1,run01,dycause_entry_0based_raw,front-end,0,3,0.6619039184574208,shipping -> catalogue -> front-end -> payment,True
+mesh_e1_mesh_run01,mesh_e1,run01,dycause_entry_0based_raw,front-end,0,4,0.5746067968661095,shipping -> orders -> catalogue -> front-end -> carts,False
+mesh_e1_mesh_run01,mesh_e1,run01,dycause_entry_0based_raw,front-end,0,5,0.5399418670644016,shipping -> orders -> catalogue -> front-end -> payment,True
+mesh_e1_mesh_run01,mesh_e1,run01,dycause_entry_1based_fixed,front-end,1,1,0.6360814810447278,front-end -> user -> shipping -> carts,False
+mesh_e1_mesh_run01,mesh_e1,run01,dycause_entry_1based_fixed,front-end,1,2,0.3636561007381676,front-end -> carts,False
+mesh_e1_mesh_run01,mesh_e1,run01,dycause_entry_1based_fixed,front-end,1,3,0.190331451729628,front-end -> payment,True
+mesh_e1_mesh_run02,mesh_e1,run02,dycause_entry_0based_raw,front-end,0,1,1.0,payment -> carts,True
+mesh_e1_mesh_run02,mesh_e1,run02,dycause_entry_1based_fixed,front-end,1,1,0.9901840490797547,front-end -> payment -> carts,True
+mesh_e1_mesh_run02,mesh_e1,run02,dycause_entry_1based_fixed,front-end,1,2,0.5948752600838959,front-end -> shipping -> user -> payment -> carts,True
+mesh_e1_mesh_run02,mesh_e1,run02,dycause_entry_1based_fixed,front-end,1,3,0.42614462246670914,front-end -> shipping -> orders -> payment -> carts,True
+mesh_e1_mesh_run02,mesh_e1,run02,dycause_entry_1based_fixed,front-end,1,4,0.2553723171350994,front-end -> shipping -> orders -> carts,False
+mesh_e1_mesh_run02,mesh_e1,run02,dycause_entry_1based_fixed,front-end,1,5,0.21101551471522906,front-end -> shipping -> catalogue,False
+mesh_e1_mesh_run03,mesh_e1,run03,dycause_entry_0based_raw,front-end,0,1,0.8173876421234156,shipping -> front-end -> orders -> carts -> catalogue,False
+mesh_e1_mesh_run03,mesh_e1,run03,dycause_entry_1based_fixed,front-end,1,1,0.6956460702056929,front-end -> orders -> carts -> catalogue,False
+mesh_e1_mesh_run04,mesh_e1,run04,dycause_entry_0based_raw,front-end,0,1,1.0,payment,True
+mesh_e1_mesh_run04,mesh_e1,run04,dycause_entry_1based_fixed,front-end,1,1,0.7733071018458316,front-end -> orders -> shipping -> carts -> catalogue -> user -> payment,True
+mesh_e1_mesh_run04,mesh_e1,run04,dycause_entry_1based_fixed,front-end,1,2,0.6708502692016397,front-end -> carts -> catalogue -> user -> payment,True
+mesh_e1_mesh_run05,mesh_e1,run05,dycause_entry_0based_raw,front-end,0,1,0.8113830613830614,catalogue -> payment -> orders,True
+mesh_e1_mesh_run05,mesh_e1,run05,dycause_entry_0based_raw,front-end,0,2,0.782925407925408,payment -> orders,True
+mesh_e1_mesh_run05,mesh_e1,run05,dycause_entry_1based_fixed,front-end,1,1,0.6675326231400998,front-end -> user -> catalogue -> payment -> orders,True
+mesh_e1_mesh_run05,mesh_e1,run05,dycause_entry_1based_fixed,front-end,1,2,0.6006107080873436,front-end -> user -> payment -> orders,True
+mesh_e1_mesh_run06,mesh_e1,run06,dycause_entry_0based_raw,front-end,0,1,0.8768433881779404,catalogue -> carts -> orders -> front-end -> shipping -> payment,True
+mesh_e1_mesh_run06,mesh_e1,run06,dycause_entry_1based_fixed,front-end,1,1,0.6305301645338208,front-end -> shipping -> payment,True
+extended_mesh_e1_mesh_run07,mesh_e1,run07,dycause_entry_0based_raw,front-end,0,1,1.0,carts,False
+extended_mesh_e1_mesh_run07,mesh_e1,run07,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_mesh_e1_mesh_run08,mesh_e1,run08,dycause_entry_0based_raw,front-end,0,1,0.6766367505072322,carts -> catalogue -> shipping -> orders,False
+extended_mesh_e1_mesh_run08,mesh_e1,run08,dycause_entry_0based_raw,front-end,0,2,0.6342943854324734,front-end,False
+extended_mesh_e1_mesh_run08,mesh_e1,run08,dycause_entry_0based_raw,front-end,0,3,0.5722919888324866,carts -> catalogue -> shipping -> user -> front-end,False
+extended_mesh_e1_mesh_run08,mesh_e1,run08,dycause_entry_0based_raw,front-end,0,4,0.5614567526555387,payment -> orders,True
+extended_mesh_e1_mesh_run08,mesh_e1,run08,dycause_entry_0based_raw,front-end,0,5,0.5583465106735062,carts -> catalogue -> shipping -> user -> payment -> orders,True
+extended_mesh_e1_mesh_run08,mesh_e1,run08,dycause_entry_0based_raw,front-end,0,6,0.538255580891482,carts -> catalogue -> user -> front-end,False
+extended_mesh_e1_mesh_run08,mesh_e1,run08,dycause_entry_0based_raw,front-end,0,7,0.5283282886889065,carts -> catalogue -> user -> payment -> orders,True
+extended_mesh_e1_mesh_run08,mesh_e1,run08,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_mesh_e1_mesh_run09,mesh_e1,run09,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_mesh_e1_mesh_run09,mesh_e1,run09,dycause_entry_1based_fixed,front-end,1,1,0.781572048238715,front-end -> catalogue -> shipping -> orders,False
+extended_mesh_e1_mesh_run09,mesh_e1,run09,dycause_entry_1based_fixed,front-end,1,2,0.622083773577536,front-end -> catalogue -> carts -> payment -> orders,True
+extended_mesh_e1_mesh_run09,mesh_e1,run09,dycause_entry_1based_fixed,front-end,1,3,0.6095263211809503,front-end -> catalogue -> carts -> shipping -> orders,False
+extended_mesh_e1_mesh_run09,mesh_e1,run09,dycause_entry_1based_fixed,front-end,1,4,0.5005984566938825,front-end -> catalogue -> carts -> orders,False
+extended_mesh_e1_mesh_run09,mesh_e1,run09,dycause_entry_1based_fixed,front-end,1,5,0.2074074074074074,front-end -> user,False
+extended_mesh_e1_mesh_run10,mesh_e1,run10,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_mesh_e1_mesh_run10,mesh_e1,run10,dycause_entry_1based_fixed,front-end,1,1,0.7066865875647066,front-end -> orders -> catalogue -> carts -> shipping,False
+extended_mesh_e1_mesh_run10,mesh_e1,run10,dycause_entry_1based_fixed,front-end,1,2,0.6785028790786948,front-end -> orders -> user,False
+extended_mesh_e1_mesh_run10,mesh_e1,run10,dycause_entry_1based_fixed,front-end,1,3,0.6546840338288822,front-end -> orders -> payment -> catalogue -> carts -> shipping,True
+extended_mesh_e1_mesh_run10,mesh_e1,run10,dycause_entry_1based_fixed,front-end,1,4,0.5836629248337502,front-end -> orders -> catalogue -> shipping,False
+extended_mesh_e1_mesh_run10,mesh_e1,run10,dycause_entry_1based_fixed,front-end,1,5,0.5494156483467089,front-end -> orders -> payment -> catalogue -> shipping,True
+mesh_e2_mesh_run01,mesh_e2,run01,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+mesh_e2_mesh_run01,mesh_e2,run01,dycause_entry_1based_fixed,front-end,1,1,0.7055253701464901,front-end -> carts -> orders -> shipping,False
+mesh_e2_mesh_run01,mesh_e2,run01,dycause_entry_1based_fixed,front-end,1,2,0.6573399255074553,front-end -> carts -> orders -> payment,False
+mesh_e2_mesh_run01,mesh_e2,run01,dycause_entry_1based_fixed,front-end,1,3,0.572790402253904,front-end -> carts -> orders -> catalogue,False
+mesh_e2_mesh_run01,mesh_e2,run01,dycause_entry_1based_fixed,front-end,1,4,0.2854141004275053,front-end -> user,True
+mesh_e2_mesh_run01,mesh_e2,run01,dycause_entry_1based_fixed,front-end,1,5,0.07086443011375987,front-end -> catalogue,False
+mesh_e2_mesh_run02,mesh_e2,run02,dycause_entry_0based_raw,front-end,0,1,0.6858552631578947,front-end -> shipping,False
+mesh_e2_mesh_run02,mesh_e2,run02,dycause_entry_0based_raw,front-end,0,2,0.6354653189264552,payment -> catalogue -> user -> front-end -> shipping,True
+mesh_e2_mesh_run02,mesh_e2,run02,dycause_entry_0based_raw,front-end,0,3,0.6307565789473685,orders -> user -> front-end -> shipping,True
+mesh_e2_mesh_run02,mesh_e2,run02,dycause_entry_0based_raw,front-end,0,4,0.5649779975601255,orders -> user -> payment -> carts,True
+mesh_e2_mesh_run02,mesh_e2,run02,dycause_entry_0based_raw,front-end,0,5,0.5542981003834089,payment -> carts,False
+mesh_e2_mesh_run02,mesh_e2,run02,dycause_entry_0based_raw,front-end,0,6,0.472104827466016,payment -> user -> front-end -> shipping,True
+mesh_e2_mesh_run02,mesh_e2,run02,dycause_entry_1based_fixed,front-end,1,1,1.0,front-end -> shipping,False
+mesh_e2_mesh_run03,mesh_e2,run03,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+mesh_e2_mesh_run03,mesh_e2,run03,dycause_entry_1based_fixed,front-end,1,1,0.6498903508771929,front-end -> shipping -> carts -> payment -> orders,False
+mesh_e2_mesh_run03,mesh_e2,run03,dycause_entry_1based_fixed,front-end,1,2,0.5592105263157895,front-end -> payment -> orders,False
+mesh_e2_mesh_run03,mesh_e2,run03,dycause_entry_1based_fixed,front-end,1,3,0.5460526315789473,front-end -> shipping -> carts -> orders,False
+mesh_e2_mesh_run03,mesh_e2,run03,dycause_entry_1based_fixed,front-end,1,4,0.3081140350877193,front-end -> user,True
+mesh_e2_mesh_run03,mesh_e2,run03,dycause_entry_1based_fixed,front-end,1,5,0.1107456140350877,front-end -> orders,False
+mesh_e2_mesh_run03,mesh_e2,run03,dycause_entry_1based_fixed,front-end,1,6,0.03508771929824561,front-end -> catalogue,False
+extended_mesh_e2_mesh_run04,mesh_e2,run04,dycause_entry_0based_raw,front-end,0,1,1.0,payment,False
+extended_mesh_e2_mesh_run04,mesh_e2,run04,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_mesh_e2_mesh_run05,mesh_e2,run05,dycause_entry_0based_raw,front-end,0,1,0.6768976759790226,orders -> carts -> front-end -> user -> payment,True
+extended_mesh_e2_mesh_run05,mesh_e2,run05,dycause_entry_0based_raw,front-end,0,2,0.6577952665910148,shipping -> front-end -> user -> payment,True
+extended_mesh_e2_mesh_run05,mesh_e2,run05,dycause_entry_0based_raw,front-end,0,3,0.5878962536023055,payment,False
+extended_mesh_e2_mesh_run05,mesh_e2,run05,dycause_entry_0based_raw,front-end,0,4,0.579069256596087,shipping -> front-end -> user -> orders -> carts -> catalogue,True
+extended_mesh_e2_mesh_run05,mesh_e2,run05,dycause_entry_0based_raw,front-end,0,5,0.5231023240209774,shipping -> front-end -> orders -> carts -> catalogue,False
+extended_mesh_e2_mesh_run05,mesh_e2,run05,dycause_entry_0based_raw,front-end,0,6,0.47704357560492255,orders -> carts -> catalogue,False
+extended_mesh_e2_mesh_run05,mesh_e2,run05,dycause_entry_1based_fixed,front-end,1,1,0.7089622911071017,front-end -> user -> payment,True
+extended_mesh_e2_mesh_run05,mesh_e2,run05,dycause_entry_1based_fixed,front-end,1,2,0.5652897638566664,front-end -> user -> orders -> carts -> catalogue,True
+extended_mesh_e2_mesh_run05,mesh_e2,run05,dycause_entry_1based_fixed,front-end,1,3,0.46741837865167707,front-end -> orders -> carts -> catalogue,False
+mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_0based_raw,front-end,0,1,0.8407675761349486,shipping -> front-end -> carts,False
+mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_0based_raw,front-end,0,2,0.7278165264777967,catalogue -> payment -> front-end -> carts,True
+mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_0based_raw,front-end,0,3,0.6822820987153719,catalogue -> payment -> orders -> user -> shipping -> front-end -> carts,True
+mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_0based_raw,front-end,0,4,0.6384894945613679,catalogue -> payment -> orders -> front-end -> carts,True
+mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_0based_raw,front-end,0,5,0.6032243564977954,payment -> orders -> user -> shipping -> front-end -> carts,True
+mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_0based_raw,front-end,0,6,0.5848791846301187,payment -> front-end -> carts,True
+mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_0based_raw,front-end,0,7,0.5089547301965021,payment -> orders -> front-end -> carts,True
+mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_1based_fixed,front-end,1,1,1.0,front-end -> carts,False
+mesh_e3_mesh_run02,mesh_e3,run02,dycause_entry_0based_raw,front-end,0,1,0.8168738252446623,carts -> front-end -> catalogue -> shipping -> orders,False
+mesh_e3_mesh_run02,mesh_e3,run02,dycause_entry_0based_raw,front-end,0,2,0.7537338149399355,carts -> front-end -> catalogue -> orders,False
+mesh_e3_mesh_run02,mesh_e3,run02,dycause_entry_0based_raw,front-end,0,3,0.6502593116454503,carts -> front-end -> catalogue -> user -> payment,True
+mesh_e3_mesh_run02,mesh_e3,run02,dycause_entry_0based_raw,front-end,0,4,0.1873278236914601,payment,True
+mesh_e3_mesh_run02,mesh_e3,run02,dycause_entry_1based_fixed,front-end,1,1,0.7572323166382572,front-end -> catalogue -> shipping -> orders,False
+mesh_e3_mesh_run02,mesh_e3,run02,dycause_entry_1based_fixed,front-end,1,2,0.6011315417256011,front-end -> catalogue -> orders,False
+mesh_e3_mesh_run02,mesh_e3,run02,dycause_entry_1based_fixed,front-end,1,3,0.4795414606395705,front-end -> catalogue -> user -> payment,True
+mesh_e3_mesh_run04,mesh_e3,run04,dycause_entry_0based_raw,front-end,0,1,0.898653811169729,shipping -> front-end -> carts -> orders,False
+mesh_e3_mesh_run04,mesh_e3,run04,dycause_entry_0based_raw,front-end,0,2,0.7467224546722454,shipping -> catalogue -> payment,True
+mesh_e3_mesh_run04,mesh_e3,run04,dycause_entry_1based_fixed,front-end,1,1,0.9173913043478261,front-end -> carts -> orders,False
+mesh_e3_mesh_run04,mesh_e3,run04,dycause_entry_1based_fixed,front-end,1,2,0.6810769510642168,front-end -> carts -> user -> shipping -> catalogue -> payment,True
+mesh_e3_mesh_run05,mesh_e3,run05,dycause_entry_0based_raw,front-end,0,1,1.0,payment,True
+mesh_e3_mesh_run05,mesh_e3,run05,dycause_entry_1based_fixed,front-end,1,1,0.7536753223257482,front-end -> catalogue -> orders -> user -> payment,True
+mesh_e3_mesh_run05,mesh_e3,run05,dycause_entry_1based_fixed,front-end,1,2,0.6617458279845957,front-end -> shipping -> carts,False
+mesh_e3_mesh_run05,mesh_e3,run05,dycause_entry_1based_fixed,front-end,1,3,0.6512489158276015,front-end -> catalogue -> shipping -> carts,False
+mesh_e3_mesh_run06,mesh_e3,run06,dycause_entry_0based_raw,front-end,0,1,0.8832309043020193,shipping -> carts,False
+mesh_e3_mesh_run06,mesh_e3,run06,dycause_entry_1based_fixed,front-end,1,1,0.8924035253068237,front-end -> catalogue -> payment -> orders -> user -> shipping -> carts,True
+extended_mesh_e3_mesh_run07,mesh_e3,run07,dycause_entry_0based_raw,front-end,0,1,0.7185945273631841,payment -> front-end,True
+extended_mesh_e3_mesh_run07,mesh_e3,run07,dycause_entry_0based_raw,front-end,0,2,0.614722756417486,shipping -> orders -> catalogue -> carts,False
+extended_mesh_e3_mesh_run07,mesh_e3,run07,dycause_entry_0based_raw,front-end,0,3,0.6098323182661411,shipping -> orders -> user -> payment -> front-end,True
+extended_mesh_e3_mesh_run07,mesh_e3,run07,dycause_entry_0based_raw,front-end,0,4,0.43812988057570823,shipping -> carts,False
+extended_mesh_e3_mesh_run07,mesh_e3,run07,dycause_entry_0based_raw,front-end,0,5,0.4297344276834227,shipping -> orders -> user -> front-end,False
+extended_mesh_e3_mesh_run07,mesh_e3,run07,dycause_entry_0based_raw,front-end,0,6,0.1069651741293532,front-end,False
+extended_mesh_e3_mesh_run07,mesh_e3,run07,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_mesh_e3_mesh_run08,mesh_e3,run08,dycause_entry_0based_raw,front-end,0,1,0.7604540042860544,carts -> front-end,False
+extended_mesh_e3_mesh_run08,mesh_e3,run08,dycause_entry_0based_raw,front-end,0,2,0.6030292693223381,carts -> shipping -> front-end,False
+extended_mesh_e3_mesh_run08,mesh_e3,run08,dycause_entry_0based_raw,front-end,0,3,0.600308709995193,catalogue -> carts -> front-end,False
+extended_mesh_e3_mesh_run08,mesh_e3,run08,dycause_entry_0based_raw,front-end,0,4,0.5222764823451213,catalogue -> carts -> shipping -> front-end,False
+extended_mesh_e3_mesh_run08,mesh_e3,run08,dycause_entry_0based_raw,front-end,0,5,0.47348050658580254,carts -> shipping -> payment,True
+extended_mesh_e3_mesh_run08,mesh_e3,run08,dycause_entry_0based_raw,front-end,0,6,0.4672799428526073,carts -> orders,False
+extended_mesh_e3_mesh_run08,mesh_e3,run08,dycause_entry_0based_raw,front-end,0,7,0.42511491029271953,catalogue -> carts -> shipping -> payment,True
+extended_mesh_e3_mesh_run08,mesh_e3,run08,dycause_entry_0based_raw,front-end,0,8,0.41766433225477595,catalogue -> user -> carts -> front-end,False
+extended_mesh_e3_mesh_run08,mesh_e3,run08,dycause_entry_0based_raw,front-end,0,9,0.4048593357062284,catalogue -> carts -> orders,False
+extended_mesh_e3_mesh_run08,mesh_e3,run08,dycause_entry_0based_raw,front-end,0,10,0.39176742568280193,catalogue -> user -> carts -> shipping -> front-end,False
+extended_mesh_e3_mesh_run08,mesh_e3,run08,dycause_entry_0based_raw,front-end,0,11,0.3140381680408805,catalogue -> user -> carts -> shipping -> payment,True
+extended_mesh_e3_mesh_run08,mesh_e3,run08,dycause_entry_0based_raw,front-end,0,12,0.27107730153805243,catalogue -> user -> carts -> orders,False
+extended_mesh_e3_mesh_run08,mesh_e3,run08,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_mesh_e3_mesh_run09,mesh_e3,run09,dycause_entry_0based_raw,front-end,0,1,0.7711417307076529,catalogue -> shipping -> carts -> orders -> front-end,False
+extended_mesh_e3_mesh_run09,mesh_e3,run09,dycause_entry_0based_raw,front-end,0,2,0.6887939948233536,catalogue -> shipping -> carts -> orders -> user -> payment,True
+extended_mesh_e3_mesh_run09,mesh_e3,run09,dycause_entry_0based_raw,front-end,0,3,0.6213588363219128,catalogue -> shipping -> carts -> orders -> user -> front-end,False
+extended_mesh_e3_mesh_run09,mesh_e3,run09,dycause_entry_0based_raw,front-end,0,4,0.6069164265129683,payment,True
+extended_mesh_e3_mesh_run09,mesh_e3,run09,dycause_entry_0based_raw,front-end,0,5,0.2023054755043228,front-end,False
+extended_mesh_e3_mesh_run09,mesh_e3,run09,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_mesh_e3_mesh_run10,mesh_e3,run10,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+extended_mesh_e3_mesh_run10,mesh_e3,run10,dycause_entry_1based_fixed,front-end,1,1,0.7146063339034883,front-end -> orders -> payment -> shipping,True
+extended_mesh_e3_mesh_run10,mesh_e3,run10,dycause_entry_1based_fixed,front-end,1,2,0.6254406237759048,front-end -> orders -> catalogue -> payment -> shipping,True
+extended_mesh_e3_mesh_run10,mesh_e3,run10,dycause_entry_1based_fixed,front-end,1,3,0.5894495412844036,front-end -> orders -> user,False
+extended_mesh_e3_mesh_run10,mesh_e3,run10,dycause_entry_1based_fixed,front-end,1,4,0.45358938475094596,front-end -> orders -> payment -> user,True
+extended_mesh_e3_mesh_run10,mesh_e3,run10,dycause_entry_1based_fixed,front-end,1,5,0.42967791191149796,front-end -> orders -> catalogue -> payment -> user,True
+mesh_e4_mesh_run01,mesh_e4,run01,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+mesh_e4_mesh_run01,mesh_e4,run01,dycause_entry_1based_fixed,front-end,1,1,0.6783615316117542,front-end -> catalogue -> user,True
+mesh_e4_mesh_run01,mesh_e4,run01,dycause_entry_1based_fixed,front-end,1,2,0.3467497773820125,front-end -> shipping,False
+mesh_e4_mesh_run01,mesh_e4,run01,dycause_entry_1based_fixed,front-end,1,3,0.2185660922560672,front-end -> carts -> payment,False
+mesh_e4_mesh_run01,mesh_e4,run01,dycause_entry_1based_fixed,front-end,1,4,0.1082813891362422,front-end -> payment,False
+mesh_e4_mesh_run02,mesh_e4,run02,dycause_entry_0based_raw,front-end,0,1,0.9565217391304348,front-end -> carts -> orders -> catalogue -> shipping,False
+mesh_e4_mesh_run02,mesh_e4,run02,dycause_entry_1based_fixed,front-end,1,1,0.9456521739130435,front-end -> carts -> orders -> catalogue -> shipping,False
+mesh_e4_mesh_run03,mesh_e4,run03,dycause_entry_0based_raw,front-end,0,1,0.7244193345888261,shipping -> front-end -> carts,False
+mesh_e4_mesh_run03,mesh_e4,run03,dycause_entry_1based_fixed,front-end,1,1,0.1732580037664783,front-end -> carts,False
+mesh_e5_mesh_run01,mesh_e5,run01,dycause_entry_0based_raw,front-end,0,1,1.0,payment,False
+mesh_e5_mesh_run01,mesh_e5,run01,dycause_entry_1based_fixed,front-end,1,1,0.8215873015873015,front-end -> orders -> user -> payment,False
+mesh_e5_mesh_run01,mesh_e5,run01,dycause_entry_1based_fixed,front-end,1,2,0.5624404761904762,front-end -> orders -> carts -> shipping,False
+mesh_e5_mesh_run01,mesh_e5,run01,dycause_entry_1based_fixed,front-end,1,3,0.5561904761904762,front-end -> orders -> carts -> catalogue,True
+mesh_e5_mesh_run02,mesh_e5,run02,dycause_entry_0based_raw,front-end,0,1,1.0,carts,False
+mesh_e5_mesh_run02,mesh_e5,run02,dycause_entry_1based_fixed,front-end,1,1,0.7941496113164267,front-end -> catalogue -> payment -> orders -> user -> carts,True
+mesh_e5_mesh_run02,mesh_e5,run02,dycause_entry_1based_fixed,front-end,1,2,0.7581107429590926,front-end -> catalogue -> payment -> orders -> shipping,True
+mesh_e5_mesh_run02,mesh_e5,run02,dycause_entry_1based_fixed,front-end,1,3,0.581728048935899,front-end -> orders -> user -> carts,False
+mesh_e5_mesh_run02,mesh_e5,run02,dycause_entry_1based_fixed,front-end,1,4,0.40343953103096725,front-end -> orders -> shipping,False
+mesh_e5_mesh_run03,mesh_e5,run03,dycause_entry_0based_raw,front-end,0,1,0.0,,False
+mesh_e5_mesh_run03,mesh_e5,run03,dycause_entry_1based_fixed,front-end,1,1,0.6036585365853658,front-end -> user,False
+mesh_e5_mesh_run03,mesh_e5,run03,dycause_entry_1based_fixed,front-end,1,2,0.29522854306607355,front-end -> orders -> shipping -> catalogue,True
+mesh_e5_mesh_run04,mesh_e5,run04,dycause_entry_0based_raw,front-end,0,1,0.622378742245797,orders -> carts -> catalogue -> payment,True
+mesh_e5_mesh_run04,mesh_e5,run04,dycause_entry_1based_fixed,front-end,1,1,0.6979029937966376,front-end -> shipping -> orders -> carts -> catalogue -> payment,True
+mesh_e5_mesh_run05,mesh_e5,run05,dycause_entry_0based_raw,front-end,0,1,0.7355951478392723,carts -> payment -> user -> shipping,False
+mesh_e5_mesh_run05,mesh_e5,run05,dycause_entry_0based_raw,front-end,0,2,0.7034257740160097,catalogue -> orders -> carts -> payment -> user -> shipping,True
+mesh_e5_mesh_run05,mesh_e5,run05,dycause_entry_0based_raw,front-end,0,3,0.6307808946171342,shipping,False
+mesh_e5_mesh_run05,mesh_e5,run05,dycause_entry_0based_raw,front-end,0,4,0.5115039695548702,catalogue -> orders -> front-end -> user -> shipping,True
+mesh_e5_mesh_run05,mesh_e5,run05,dycause_entry_1based_fixed,front-end,1,1,0.7936102250171381,front-end -> catalogue -> orders -> carts -> payment -> user -> shipping,True
+mesh_e5_mesh_run05,mesh_e5,run05,dycause_entry_1based_fixed,front-end,1,2,0.5160273899837263,front-end -> user -> shipping,False
+extended_mesh_e5_mesh_run06,mesh_e5,run06,dycause_entry_0based_raw,front-end,0,1,0.6684547062390108,orders -> carts -> shipping -> user -> payment -> front-end,False
+extended_mesh_e5_mesh_run06,mesh_e5,run06,dycause_entry_0based_raw,front-end,0,2,0.6310007938538377,orders -> carts -> catalogue,True
+extended_mesh_e5_mesh_run06,mesh_e5,run06,dycause_entry_0based_raw,front-end,0,3,0.5517060493968905,payment -> shipping -> user -> orders -> carts -> catalogue,True
+extended_mesh_e5_mesh_run06,mesh_e5,run06,dycause_entry_0based_raw,front-end,0,4,0.5513101898324196,payment -> carts -> shipping -> user -> orders -> catalogue,True
+extended_mesh_e5_mesh_run06,mesh_e5,run06,dycause_entry_0based_raw,front-end,0,5,0.471583849734004,orders -> carts -> user -> payment -> front-end,False
+extended_mesh_e5_mesh_run06,mesh_e5,run06,dycause_entry_0based_raw,front-end,0,6,0.46692148453432064,payment -> shipping -> user -> orders -> catalogue,True
+extended_mesh_e5_mesh_run06,mesh_e5,run06,dycause_entry_0based_raw,front-end,0,7,0.4586867539258867,orders -> catalogue,True
+extended_mesh_e5_mesh_run06,mesh_e5,run06,dycause_entry_0based_raw,front-end,0,8,0.33101043004609465,payment -> carts -> user -> orders -> catalogue,True
+extended_mesh_e5_mesh_run06,mesh_e5,run06,dycause_entry_0based_raw,front-end,0,9,0.1998254650625628,payment -> carts -> catalogue,True
+extended_mesh_e5_mesh_run06,mesh_e5,run06,dycause_entry_0based_raw,front-end,0,10,0.16335730995874775,payment -> front-end,False
+extended_mesh_e5_mesh_run06,mesh_e5,run06,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_0based_raw,front-end,0,1,0.7718647501256197,orders -> carts,False
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_0based_raw,front-end,0,2,0.6638670950265153,orders -> front-end -> carts,False
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_0based_raw,front-end,0,3,0.5119113418598544,orders -> front-end -> shipping -> carts,False
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_0based_raw,front-end,0,4,0.42909875218804583,orders -> front-end -> shipping -> payment -> carts,False
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_0based_raw,front-end,0,5,0.3699655683351335,orders -> front-end -> shipping -> catalogue,True
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_0based_raw,front-end,0,6,0.29833662921057813,orders -> front-end -> shipping -> payment -> user -> catalogue,True
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_0based_raw,front-end,0,7,0.1178451178451178,catalogue,True
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_1based_fixed,front-end,1,1,0.771021021021021,front-end -> carts,False
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_1based_fixed,front-end,1,2,0.41353255169044645,front-end -> shipping -> carts,False
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_1based_fixed,front-end,1,3,0.39906477872221313,front-end -> shipping -> payment -> user -> orders -> carts,False
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_1based_fixed,front-end,1,4,0.38173512601430226,front-end -> shipping -> orders -> carts,False
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_1based_fixed,front-end,1,5,0.3307202144435549,front-end -> shipping -> payment -> orders -> carts,False
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_1based_fixed,front-end,1,6,0.30830449896056816,front-end -> shipping -> payment -> carts,False
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_1based_fixed,front-end,1,7,0.142359877801236,front-end -> shipping -> payment -> user -> catalogue,True
+extended_mesh_e5_mesh_run07,mesh_e5,run07,dycause_entry_1based_fixed,front-end,1,8,0.12964100464100464,front-end -> shipping -> catalogue,True

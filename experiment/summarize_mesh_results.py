@@ -22,8 +22,15 @@ from statistics import mean, pstdev
 
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_DATA_ROOT = os.path.join(ROOT, "data", "sockshop_mesh_business")
-DEFAULT_MAIN_PARAMS = {"lag": 5, "step": 30, "edge_thres": 0.8}
+DEFAULT_DATA_ROOT = os.path.join(ROOT, "data", "sockshop_mesh_extended")
+DEFAULT_MAIN_PARAMS = {"lag": 7, "step": 30, "edge_thres": 0.8}
+KNOWN_EXPERIMENT_DEFAULTS = {
+    "mesh_e1": {"group": "legacy", "fault_type": "pod-kill", "object_role": "main-reference"},
+    "mesh_e2": {"group": "legacy", "fault_type": "pod-kill", "object_role": "negative-case"},
+    "mesh_e3": {"group": "legacy", "fault_type": "network-delay", "object_role": "main-reference"},
+    "mesh_e4": {"group": "legacy", "fault_type": "network-delay", "object_role": "negative-case"},
+    "mesh_e5": {"group": "legacy", "fault_type": "network-delay", "object_role": "negative-case"},
+}
 
 
 def load_json(path, default=None):
@@ -114,6 +121,16 @@ def phase_service_mean(run_dir, phase, service):
     return mean(values) if values else ""
 
 
+def canonical_load_profile(meta, run_dir):
+    profile = meta.get("load_profile", "")
+    if profile:
+        return profile
+    parts = os.path.normpath(run_dir).split(os.sep)
+    if "sockshop_mesh_extended" in parts:
+        return "legacy-compressed-v0"
+    return ""
+
+
 def summarize_run(run_dir):
     meta = load_json(os.path.join(run_dir, "metadata.json"), {})
     quality = load_json(os.path.join(run_dir, "quality.json"), {})
@@ -125,15 +142,17 @@ def summarize_run(run_dir):
     fault_baseline_ratio = ""
     if baseline_mean not in ("", 0) and fault_mean != "":
         fault_baseline_ratio = fault_mean / baseline_mean
+    experiment_name = meta.get("experiment", os.path.basename(os.path.dirname(run_dir)))
+    defaults = KNOWN_EXPERIMENT_DEFAULTS.get(experiment_name, {})
 
     base = {
-        "experiment": meta.get("experiment", os.path.basename(os.path.dirname(run_dir))),
+        "experiment": experiment_name,
         "run": meta.get("run", os.path.basename(run_dir)),
         "dataset": meta.get("dycause_dataset", ""),
         "desc": meta.get("desc", ""),
-        "group": meta.get("group", ""),
-        "fault_type": meta.get("fault_type", ""),
-        "object_role": meta.get("object_role", ""),
+        "group": meta.get("group", "") or defaults.get("group", ""),
+        "fault_type": meta.get("fault_type", "") or defaults.get("fault_type", ""),
+        "object_role": meta.get("object_role", "") or defaults.get("object_role", ""),
         "root": root,
         "root_idx": (meta.get("root_cause_indices") or [""])[0],
         "baseline_mean": baseline_mean,
@@ -142,7 +161,7 @@ def summarize_run(run_dir):
         "baseline_seconds": meta.get("baseline_seconds", ""),
         "fault_seconds": meta.get("fault_seconds", ""),
         "rate_window": meta.get("rate_window", ""),
-        "load_profile": meta.get("load_profile", ""),
+        "load_profile": canonical_load_profile(meta, run_dir),
         "data_root": meta.get("data_root", ""),
         "dataset_prefix": meta.get("dataset_prefix", ""),
         "path": run_dir,
@@ -214,10 +233,10 @@ def aggregate(rows):
     groups = defaultdict(list)
     for row in rows:
         if row.get("dycause_ok") and row.get("quality_valid"):
-            groups[row["experiment"]].append(row)
+            groups[(row.get("load_profile", ""), row["experiment"])].append(row)
 
     result = []
-    for exp, exp_rows in sorted(groups.items()):
+    for (load_profile, exp), exp_rows in sorted(groups.items()):
         first = exp_rows[0]
 
         def values(key):
@@ -228,6 +247,7 @@ def aggregate(rows):
         result.append(
             {
                 "experiment": exp,
+                "load_profile": load_profile,
                 "group": first.get("group", ""),
                 "fault_type": first.get("fault_type", ""),
                 "object_role": first.get("object_role", ""),
@@ -240,6 +260,34 @@ def aggregate(rows):
                 "acc_mean": mean(acc_values) if acc_values else None,
                 "acc_std": pstdev(acc_values) if len(acc_values) > 1 else 0.0,
                 "top2_hit_rate": mean(1.0 if float(row["pr2"]) > 0 else 0.0 for row in exp_rows),
+            }
+        )
+    return result
+
+
+def aggregate_by_service_fault(rows):
+    groups = defaultdict(list)
+    for row in rows:
+        if row.get("dycause_ok") and row.get("quality_valid"):
+            groups[(row.get("load_profile", ""), row.get("root", ""), row.get("fault_type", ""))].append(row)
+
+    result = []
+    for (load_profile, root, fault_type), group_rows in sorted(groups.items()):
+        def values(key):
+            return [float(row[key]) for row in group_rows if row.get(key) not in ("", None)]
+
+        acc_values = values("acc")
+        result.append(
+            {
+                "load_profile": load_profile,
+                "root": root,
+                "fault_type": fault_type,
+                "result_rows": len(group_rows),
+                "pr2_mean": mean(values("pr2")) if values("pr2") else None,
+                "pr5_mean": mean(values("pr5")) if values("pr5") else None,
+                "acc_mean": mean(acc_values) if acc_values else None,
+                "acc_std": pstdev(acc_values) if len(acc_values) > 1 else 0.0,
+                "top2_hit_rate": mean(1.0 if float(row["pr2"]) > 0 else 0.0 for row in group_rows),
             }
         )
     return result
@@ -259,8 +307,19 @@ def dataset_label(path):
 
 def write_markdown(path, rows, main_params=None):
     main_params = main_params or DEFAULT_MAIN_PARAMS
-    agg = aggregate(rows)
     lines = [f"# SockShop Mesh Results ({dataset_label(os.path.dirname(path))})", ""]
+    load_profiles = sorted({row.get("load_profile", "") for row in rows if row.get("load_profile")})
+    if load_profiles:
+        lines += [
+            "## Load Profiles",
+            "",
+            "| Load Profile | Rows |",
+            "|---|---:|",
+        ]
+        for profile in load_profiles:
+            lines.append(f"| {profile} | {sum(1 for row in rows if row.get('load_profile') == profile)} |")
+        lines.append("")
+
     main_rows = [
         row
         for row in rows
@@ -268,18 +327,21 @@ def write_markdown(path, rows, main_params=None):
         and row.get("step") == main_params["step"]
         and row.get("edge_thres") == main_params["edge_thres"]
     ]
+    aggregate_source = main_rows if main_rows else rows
+    agg = aggregate(aggregate_source)
+    service_fault_agg = aggregate_by_service_fault(aggregate_source)
     if main_rows:
         lines += [
             "## Main Parameters",
             "",
             f"`lag={main_params['lag']}`, `step={main_params['step']}`, `edge_thres={main_params['edge_thres']}`",
             "",
-            "| Experiment | Group | Fault | Role | Run | Quality | Root | Root Rank | PR@1 | PR@2 | PR@5 | Acc |",
-            "|---|---|---|---|---|---:|---|---:|---:|---:|---:|---:|",
+            "| Experiment | Load Profile | Group | Fault | Role | Run | Quality | Root | Root Rank | PR@1 | PR@2 | PR@5 | Acc |",
+            "|---|---|---|---|---|---|---:|---|---:|---:|---:|---:|---:|",
         ]
         for row in main_rows:
             lines.append(
-                "| {experiment} | {group} | {fault_type} | {object_role} | {run} | {quality_valid} | "
+                "| {experiment} | {load_profile} | {group} | {fault_type} | {object_role} | {run} | {quality_valid} | "
                 "{root}({root_idx}) | {root_rank} | {pr1} | {pr2} | {pr5} | {acc} |".format(
                     **{key: fmt(value) for key, value in row.items()}
                 )
@@ -289,12 +351,12 @@ def write_markdown(path, rows, main_params=None):
         lines += [
             "## Main Result Rows",
             "",
-            "| Experiment | Group | Fault | Role | Run | Root | Quality | Root Rank | PR@2 | PR@5 | Acc | Baseline Mean | Fault Mean | Fault/Baseline |",
-            "|---|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|",
+            "| Experiment | Load Profile | Group | Fault | Role | Run | Root | Quality | Root Rank | PR@2 | PR@5 | Acc | Baseline Mean | Fault Mean | Fault/Baseline |",
+            "|---|---|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|",
         ]
         for row in main_rows:
             lines.append(
-                "| {experiment} | {group} | {fault_type} | {object_role} | {run} | {root}({root_idx}) | "
+                "| {experiment} | {load_profile} | {group} | {fault_type} | {object_role} | {run} | {root}({root_idx}) | "
                 "{quality_valid} | {root_rank} | {pr2} | {pr5} | {acc} | {baseline_mean} | {fault_mean} | {fault_baseline_ratio} |".format(
                     **{key: fmt(value) for key, value in row.items()}
                 )
@@ -305,13 +367,29 @@ def write_markdown(path, rows, main_params=None):
         lines += [
             "## Aggregate Over Result Rows",
             "",
-            "| Experiment | Group | Fault | Role | Root | Result Rows | PR@1 | PR@2 | PR@5 | Acc Mean | Acc Std | Top-2 Hit |",
-            "|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|",
+            "| Experiment | Load Profile | Group | Fault | Role | Root | Result Rows | PR@1 | PR@2 | PR@5 | Acc Mean | Acc Std | Top-2 Hit |",
+            "|---|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|",
         ]
         for row in agg:
             lines.append(
-                "| {experiment} | {group} | {fault_type} | {object_role} | {root}({root_idx}) | "
+                "| {experiment} | {load_profile} | {group} | {fault_type} | {object_role} | {root}({root_idx}) | "
                 "{result_rows} | {pr1_mean} | {pr2_mean} | {pr5_mean} | {acc_mean} | {acc_std} | {top2_hit_rate} |".format(
+                    **{key: fmt(value) for key, value in row.items()}
+                )
+            )
+        lines.append("")
+
+    if service_fault_agg:
+        lines += [
+            "## Aggregate By Service And Fault",
+            "",
+            "| Load Profile | Root | Fault | Result Rows | PR@2 | PR@5 | Acc Mean | Acc Std | Top-2 Hit |",
+            "|---|---|---|---:|---:|---:|---:|---:|---:|",
+        ]
+        for row in service_fault_agg:
+            lines.append(
+                "| {load_profile} | {root} | {fault_type} | {result_rows} | {pr2_mean} | {pr5_mean} | "
+                "{acc_mean} | {acc_std} | {top2_hit_rate} |".format(
                     **{key: fmt(value) for key, value in row.items()}
                 )
             )
@@ -320,13 +398,13 @@ def write_markdown(path, rows, main_params=None):
     lines += [
         "## Runs",
         "",
-        "| Experiment | Group | Fault | Role | Run | Quality | Root | Root Rank | PR@1 | PR@2 | PR@5 | Acc | Params |",
-        "|---|---|---|---|---|---:|---|---:|---:|---:|---:|---:|---|",
+        "| Experiment | Load Profile | Group | Fault | Role | Run | Quality | Root | Root Rank | PR@1 | PR@2 | PR@5 | Acc | Params |",
+        "|---|---|---|---|---|---|---:|---|---:|---:|---:|---:|---:|---|",
     ]
     for row in rows:
         params = f"lag={row.get('lag')}, step={row.get('step')}, edge={row.get('edge_thres')}"
         lines.append(
-            "| {experiment} | {group} | {fault_type} | {object_role} | {run} | {quality_valid} | "
+            "| {experiment} | {load_profile} | {group} | {fault_type} | {object_role} | {run} | {quality_valid} | "
             "{root}({root_idx}) | {root_rank} | {pr1} | {pr2} | {pr5} | {acc} | {params} |".format(
                 params=params,
                 **{key: fmt(value) for key, value in row.items()},

@@ -1,0 +1,14 @@
+case_id,experiment,run,method,entry_service,entry_arg,path_rank,path_weight,path_nodes,contains_root
+business_mesh_e1_mesh_run01,mesh_e1,run01,dycause_entry_0based_raw,front-end,0,1,0.830536360644949,shipping -> carts -> front-end,False
+business_mesh_e1_mesh_run01,mesh_e1,run01,dycause_entry_0based_raw,front-end,0,2,0.7546596153808109,shipping -> payment -> catalogue -> orders,True
+business_mesh_e1_mesh_run01,mesh_e1,run01,dycause_entry_1based_fixed,front-end,1,1,0.0,front-end,False
+business_mesh_e2_mesh_run01,mesh_e2,run01,dycause_entry_0based_raw,front-end,0,1,0.9005809128630705,catalogue -> front-end -> orders -> payment -> carts,False
+business_mesh_e2_mesh_run01,mesh_e2,run01,dycause_entry_0based_raw,front-end,0,2,0.7607883817427386,catalogue -> front-end -> orders -> shipping,False
+business_mesh_e2_mesh_run01,mesh_e2,run01,dycause_entry_1based_fixed,front-end,1,1,0.8343015214384509,front-end -> orders -> payment -> carts,False
+business_mesh_e2_mesh_run01,mesh_e2,run01,dycause_entry_1based_fixed,front-end,1,2,0.5215767634854772,front-end -> orders -> shipping,False
+business_mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_0based_raw,front-end,0,1,0.7862468931234465,payment -> carts -> orders,True
+business_mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_0based_raw,front-end,0,2,0.6601236377541265,payment -> front-end -> orders,True
+business_mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_0based_raw,front-end,0,3,0.5904233849552822,payment -> front-end -> shipping,True
+business_mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_1based_fixed,front-end,1,1,0.7779236505002868,front-end -> catalogue -> user -> payment -> carts -> orders,True
+business_mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_1based_fixed,front-end,1,2,0.3391115926327194,front-end -> orders,False
+business_mesh_e3_mesh_run01,mesh_e3,run01,dycause_entry_1based_fixed,front-end,1,3,0.1300108342361863,front-end -> shipping,False
